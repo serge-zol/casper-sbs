@@ -27,19 +27,19 @@
 
 | Шар | Технологія |
 |-----|-----------|
-| Frontend | React 18 + Vite · TypeScript (обов'язково) |
-| Стилі | Tailwind CSS 3 · кастомні токени (нижче) |
+| Frontend | React 19 + Vite 8 · TypeScript 6 (обов'язково) |
+| Стилі | Tailwind CSS 4 · кастомні токени через `@theme {}` в CSS (нижче) |
 | Сховище | IndexedDB через Dexie.js · localStorage для appState |
 | PWA | vite-plugin-pwa · Workbox service worker |
 | AI-логіка | Rule-based TypeScript функції · БЕЗ зовнішніх AI API у v0.1 |
 | Графіки | Recharts (мінімальний bundle) |
 
-### Ініціалізація
+### Ініціалізація (виконано)
 ```bash
-npm create vite@latest kasper -- --template react-ts
-npm install dexie dexie-react-hooks lucide-react recharts
+# Виконано 2026-05-20. React 19 · Vite 8 · TS 6 · Tailwind 4
+npm create vite@latest . -- --template react-ts
+npm install dexie dexie-react-hooks lucide-react recharts workbox-window
 npm install -D tailwindcss postcss autoprefixer vite-plugin-pwa
-npm install workbox-window
 ```
 
 ---
@@ -75,21 +75,26 @@ kasper/
 
 ---
 
-## Дизайн-токени (Tailwind)
+## Дизайн-токени (Tailwind v4)
 
-```js
-colors: {
-  kasper: {
-    orange:    '#E85B16',  // лапка · CTA · головний акцент
-    amber:     '#F39A2F',  // прогрес · теплі підсвітки
-    cream:     '#FFF7EC',  // фон сторінок
-    sand:      '#FCE7D2',  // картки · розділювачі
-    green:     '#CDE1D5',  // відновлення · wellness
-    darkGreen: '#053E35',  // заголовки · футер · PWA theme_color
-    graphite:  '#1F2A2E',  // основний текст
-  }
+> Tailwind v4: немає `tailwind.config.js`. Токени оголошуються в `src/index.css` через `@theme {}`.
+
+```css
+/* src/index.css */
+@import "tailwindcss";
+
+@theme {
+  --color-kasper-orange:     #E85B16; /* лапка · CTA · головний акцент */
+  --color-kasper-amber:      #F39A2F; /* прогрес · теплі підсвітки */
+  --color-kasper-cream:      #FFF7EC; /* фон сторінок */
+  --color-kasper-sand:       #FCE7D2; /* картки · розділювачі */
+  --color-kasper-green:      #CDE1D5; /* відновлення · wellness */
+  --color-kasper-darkgreen:  #053E35; /* заголовки · футер · PWA theme_color */
+  --color-kasper-graphite:   #1F2A2E; /* основний текст */
 }
 ```
+
+Використання в класах: `bg-kasper-cream`, `text-kasper-orange`, `border-kasper-sand` тощо.
 
 ### Естетика бренда
 - **Стиль:** реалістичний теплий спортивно-затишний (НЕ gym-hardcore)
