@@ -47,7 +47,7 @@ npm install -D tailwindcss postcss autoprefixer vite-plugin-pwa
 ## Структура папок
 
 ```
-kasper/
+casper/
 ├── public/
 │   └── icons/              # 192.png · 512.png · apple-touch-icon.png
 ├── src/
@@ -62,7 +62,7 @@ kasper/
 │   │   ├── recommendation.ts   # generateRecommendation() — rule-based
 │   │   ├── safetyCheck.ts      # checkRedFlags()
 │   │   ├── streak.ts           # calcStreak()
-│   │   └── kasperPhrases.ts    # Словник фраз
+│   │   └── casperPhrases.ts    # Словник фраз
 │   ├── hooks/
 │   │   ├── useActiveProfile.ts
 │   │   ├── useRecommendation.ts
@@ -84,17 +84,17 @@ kasper/
 @import "tailwindcss";
 
 @theme {
-  --color-kasper-orange:     #E85B16; /* лапка · CTA · головний акцент */
-  --color-kasper-amber:      #F39A2F; /* прогрес · теплі підсвітки */
-  --color-kasper-cream:      #FFF7EC; /* фон сторінок */
-  --color-kasper-sand:       #FCE7D2; /* картки · розділювачі */
-  --color-kasper-green:      #CDE1D5; /* відновлення · wellness */
-  --color-kasper-dark-green: #053E35; /* заголовки · футер · PWA theme_color */
-  --color-kasper-graphite:   #1F2A2E; /* основний текст */
+  --color-casper-orange:     #E85B16; /* лапка · CTA · головний акцент */
+  --color-casper-amber:      #F39A2F; /* прогрес · теплі підсвітки */
+  --color-casper-cream:      #FFF7EC; /* фон сторінок */
+  --color-casper-sand:       #FCE7D2; /* картки · розділювачі */
+  --color-casper-green:      #CDE1D5; /* відновлення · wellness */
+  --color-casper-dark-green: #053E35; /* заголовки · футер · PWA theme_color */
+  --color-casper-graphite:   #1F2A2E; /* основний текст */
 }
 ```
 
-Використання в класах: `bg-kasper-cream`, `text-kasper-orange`, `border-kasper-sand` тощо.
+Використання в класах: `bg-casper-cream`, `text-casper-orange`, `border-casper-sand` тощо.
 
 ### Естетика бренда
 - **Стиль:** реалістичний теплий спортивно-затишний (НЕ gym-hardcore)
@@ -216,7 +216,7 @@ interface Recommendation {
   reason: string;             // 1 речення для UI
   safetyNotes?: string;       // примітка для Олени
   nextStep?: string;
-  kasperPhrase: string;
+  casperPhrase: string;
 }
 ```
 
@@ -303,7 +303,7 @@ function generateRecommendation(profile, preCheck, history): Recommendation {
   const caution = score < 40 ? 'red' : score < 65 ? 'yellow' : 'green';
   return { targetDuration: duration, paceType: pace, cautionLevel: caution,
            reason: buildReason(score, avgDiff, streak),
-           kasperPhrase: pickPhrase(caution) };
+           casperPhrase: pickPhrase(caution) };
 }
 ```
 
@@ -405,7 +405,7 @@ LCP:             < 2.5s на емульованому 3G
 ```
 Крок 1: db.ts + types.ts → App.tsx роутинг → TabBar → BaseUI
 Крок 2: Welcome (7 кроків онбордингу) → ProfileSelect → збереження Profile
-Крок 3: recommendation.ts → safetyCheck.ts → streak.ts → kasperPhrases.ts (+ unit-тести AC-12,13,17)
+Крок 3: recommendation.ts → safetyCheck.ts → streak.ts → casperPhrases.ts (+ unit-тести AC-12,13,17)
 Крок 4: Home (дашборд) → useRecommendation → useWeekStats
 Крок 5: Activity (PreCheck → Таймер → PostCheck → Висновок)
 Крок 6: Journal (список · фільтр · деталі · порожній стан)
@@ -469,7 +469,7 @@ LCP:             < 2.5s на емульованому 3G
 
 ---
 
-## Словник фраз (kasperPhrases.ts)
+## Словник фраз (casperPhrases.ts)
 
 ```ts
 export const phrases: Record<'green' | 'yellow' | 'red', string[]> = {

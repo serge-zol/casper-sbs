@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-kasper-orange:     #E85B16;
-  --color-kasper-amber:      #F39A2F;
-  --color-kasper-cream:      #FFF7EC;
-  --color-kasper-sand:       #FCE7D2;
-  --color-kasper-green:      #CDE1D5;
-  --color-kasper-dark-green: #053E35;
-  --color-kasper-graphite:   #1F2A2E;
+  --color-casper-orange:     #E85B16;
+  --color-casper-amber:      #F39A2F;
+  --color-casper-cream:      #FFF7EC;
+  --color-casper-sand:       #FCE7D2;
+  --color-casper-green:      #CDE1D5;
+  --color-casper-dark-green: #053E35;
+  --color-casper-graphite:   #1F2A2E;
 }
 
 *, *::before, *::after {

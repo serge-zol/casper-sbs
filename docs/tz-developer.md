@@ -63,13 +63,13 @@ npm install workbox-window
 @import "tailwindcss";
 
 @theme {
-  --color-kasper-orange: #E85B16;    /* CTA, лапка, акценти */
-  --color-kasper-amber: #F39A2F;     /* прогрес, підсвітки */
-  --color-kasper-cream: #FFF7EC;     /* фон сторінок */
-  --color-kasper-sand: #FCE7D2;      /* картки, підкладки */
-  --color-kasper-green: #CDE1D5;     /* відновлення, wellness */
-  --color-kasper-dark-green: #053E35; /* заголовки, шапки */
-  --color-kasper-graphite: #1F2A2E;  /* основний текст */
+  --color-casper-orange: #E85B16;    /* CTA, лапка, акценти */
+  --color-casper-amber: #F39A2F;     /* прогрес, підсвітки */
+  --color-casper-cream: #FFF7EC;     /* фон сторінок */
+  --color-casper-sand: #FCE7D2;      /* картки, підкладки */
+  --color-casper-green: #CDE1D5;     /* відновлення, wellness */
+  --color-casper-dark-green: #053E35; /* заголовки, шапки */
+  --color-casper-graphite: #1F2A2E;  /* основний текст */
 }
 ```
 
@@ -174,7 +174,7 @@ npm install workbox-window
 ### Dexie ініціалізація
 
 ```typescript
-const db = new Dexie('kasper-db');
+const db = new Dexie('casper-db');
 db.version(1).stores({
   profiles:        '++id, name, mode',
   activities:      '++id, profileId, date, mode',
@@ -283,7 +283,7 @@ interface Recommendation {
   reason: string;               // 1 речення для UI
   safetyNotes?: string;         // примітка для Олени
   nextStep?: string;
-  kasperPhrase: string;
+  casperPhrase: string;
 }
 ```
 
@@ -360,7 +360,7 @@ function generateRecommendation(profile, preCheck, history): Recommendation {
   return {
     targetDuration: duration, paceType: pace, cautionLevel: caution,
     reason: buildReason(score, avgDiff, streak),
-    kasperPhrase: pickPhrase(caution)
+    casperPhrase: pickPhrase(caution)
   };
 }
 ```
@@ -375,7 +375,7 @@ function generateRecommendation(profile, preCheck, history): Recommendation {
 ⚠️ operationZoneDiscomfort — ПЕРШЕ питання у pre-check для Олени
 ```
 
-### Словник фраз (kasperPhrases.ts)
+### Словник фраз (casperPhrases.ts)
 
 ```typescript
 export const phrases: Record<'green' | 'yellow' | 'red', string[]> = {
@@ -509,7 +509,7 @@ export const phrases: Record<'green' | 'yellow' | 'red', string[]> = {
 ```
 Крок 1: db.ts + types.ts → App.tsx роутинг → TabBar → SafeAreaWrapper → BaseUI
 Крок 2: Welcome splash → 7 кроків онбордингу → ProfileSelect → збереження Profile
-Крок 3: recommendation.ts → safetyCheck.ts → streak.ts → kasperPhrases.ts (+unit-тести AC-12,13,17)
+Крок 3: recommendation.ts → safetyCheck.ts → streak.ts → casperPhrases.ts (+unit-тести AC-12,13,17)
 Крок 4: Home → useRecommendation → useWeekStats
 Крок 5: Activity (PreCheck → Таймер → PostCheck → Висновок)
 Крок 6: Journal (список · фільтр · деталі · порожній стан)
