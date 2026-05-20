@@ -89,7 +89,7 @@ kasper/
   --color-kasper-cream:      #FFF7EC; /* фон сторінок */
   --color-kasper-sand:       #FCE7D2; /* картки · розділювачі */
   --color-kasper-green:      #CDE1D5; /* відновлення · wellness */
-  --color-kasper-darkgreen:  #053E35; /* заголовки · футер · PWA theme_color */
+  --color-kasper-dark-green: #053E35; /* заголовки · футер · PWA theme_color */
   --color-kasper-graphite:   #1F2A2E; /* основний текст */
 }
 ```
@@ -388,7 +388,7 @@ LCP:             < 2.5s на емульованому 3G
   "lang": "uk",
   "icons": [
     { "src": "/icons/192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/512.png", "sizes": "512x192", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/icons/512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
 ```
