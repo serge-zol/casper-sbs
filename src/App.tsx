@@ -3,6 +3,7 @@ import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
 import ProfileSelect from '@/components/screens/ProfileSelect'
+import Home from '@/components/screens/Home'
 
 export type Screen =
   | 'welcome'
@@ -38,6 +39,8 @@ function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: 
       return <Onboarding onComplete={() => onNavigate('profile-select')} />
     case 'profile-select':
       return <ProfileSelect onNavigate={onNavigate} />
+    case 'home':
+      return <Home onNavigate={onNavigate} />
     default:
       return <PlaceholderScreen screen={screen} onNavigate={onNavigate} />
   }
