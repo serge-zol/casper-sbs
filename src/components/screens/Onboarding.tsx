@@ -123,13 +123,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
   return (
     <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col">
       <div className="flex items-center px-5 pt-12 pb-2 gap-3">
-        <button
-          onClick={back}
-          style={{ minWidth: 44, minHeight: 44, visibility: phase > 1 ? 'visible' : 'hidden' }}
-          className="flex items-center justify-center text-2xl"
-        >
-          ‹
-        </button>
+        <div style={{ minWidth: 44 }} />
         <div className="flex gap-1.5 flex-1">
           {[1, 2, 3, 4, 5, 6, 7].map(n => (
             <div
@@ -152,8 +146,25 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
         {phase === 7 && <Step7 />}
       </div>
 
-      <div className="px-6 pb-10">
-        <Button onClick={next} disabled={saving}>
+      <div className="px-6 pb-10 flex gap-3">
+        <button
+          onClick={back}
+          style={{
+            flex: 1,
+            minHeight: 56,
+            borderRadius: 16,
+            fontSize: 16,
+            fontWeight: 600,
+            border: '2px solid #E85B16',
+            background: 'transparent',
+            color: '#E85B16',
+            cursor: 'pointer',
+            visibility: phase === 1 ? 'hidden' : 'visible',
+          }}
+        >
+          Назад
+        </button>
+        <Button onClick={next} disabled={saving} style={{ flex: 1, width: 'auto' }}>
           {phase === 7 ? (saving ? 'Зберігаємо…' : <span>Почати <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', display: 'inline', verticalAlign: 'middle' }} /></span>) : 'Далі'}
         </Button>
       </div>
