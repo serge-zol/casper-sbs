@@ -102,7 +102,7 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
       <div className="flex-1 px-5">
         {loading ? (
           <div className="flex items-center justify-center pt-20">
-            <span className="text-3xl">🐾</span>
+            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
           </div>
         ) : filtered.length === 0 ? (
           <EmptyState onStart={() => onNavigate('activity')} hasAny={(activities?.length ?? 0) > 0} />
@@ -174,7 +174,7 @@ function Card({
 function EmptyState({ onStart, hasAny }: { onStart: () => void; hasAny: boolean }) {
   return (
     <div className="flex flex-col items-center justify-center pt-12 px-6 text-center">
-      <span className="text-6xl mb-4">🐾</span>
+      <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={72} className="mb-4" style={{ width: 72, height: 'auto' }} />
       <p className="text-base font-semibold mb-1" style={{ color: '#053E35' }}>
         {hasAny ? 'У цьому фільтрі поки порожньо' : 'Перший крок ще попереду'}
       </p>

@@ -57,7 +57,7 @@ export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s
       <div className="flex-1 px-5">
         {loading ? (
           <div className="flex items-center justify-center pt-20">
-            <span className="text-3xl">🐾</span>
+            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
           </div>
         ) : tab === 'together' ? (
           <TogetherView activities={activities} />
@@ -87,7 +87,7 @@ function PersonalView({
   if (!profile) {
     return (
       <div className="text-center pt-12">
-        <span className="text-5xl block mb-3">🐾</span>
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} className="block mb-3" style={{ width: 56, height: 'auto' }} />
         <p className="text-base" style={{ color: '#053E35' }}>Профіль ще не створено</p>
       </div>
     )

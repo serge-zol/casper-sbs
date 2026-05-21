@@ -53,7 +53,7 @@ function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: 
       return <Journal onNavigate={onNavigate} />
     case 'statistics':
       return (
-        <Suspense fallback={<div style={{minHeight:'100dvh',background:'#FFF7EC'}} className="flex items-center justify-center"><span className="text-3xl">🐾</span></div>}>
+        <Suspense fallback={<div style={{minHeight:'100dvh',background:'#FFF7EC'}} className="flex items-center justify-center"><img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} /></div>}>
           <Statistics onNavigate={onNavigate} />
         </Suspense>
       )
@@ -80,7 +80,7 @@ function PlaceholderScreen({
           : 0,
       }}
     >
-      <span className="text-5xl mb-4">🐾</span>
+      <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} className="mb-4" style={{ width: 56, height: 'auto' }} />
       <p className="text-xl font-semibold mb-1" style={{ color: '#053E35' }}>Каспер</p>
       <p className="text-sm text-gray-400 mb-8">{screen}</p>
       <div className="flex flex-wrap gap-2 justify-center">

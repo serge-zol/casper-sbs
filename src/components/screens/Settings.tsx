@@ -63,7 +63,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
   if (!profile) {
     return (
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex items-center justify-center">
-        <span className="text-3xl">🐾</span>
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
       </div>
     )
   }
