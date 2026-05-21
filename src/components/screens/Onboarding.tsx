@@ -76,18 +76,47 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
     return (
       <div
         className="flex flex-col items-center justify-center px-8 text-center"
-        style={{ minHeight: '100dvh', background: '#053E35', color: '#fff' }}
+        style={{ minHeight: '100dvh', background: '#053E35' }}
       >
-        <span className="text-7xl mb-6">🐾</span>
-        <h1 className="text-3xl font-bold mb-3 leading-tight">
+        {/* Casper paw — fixed orange (no system emoji rendering) */}
+        <svg
+          viewBox="0 0 512 380"
+          width="128"
+          height="95"
+          className="mb-8"
+          aria-label="Каспер"
+        >
+          <g fill="#E85B16">
+            <ellipse cx="256" cy="290" rx="110" ry="85" />
+            <ellipse cx="148" cy="166" rx="44" ry="52" />
+            <ellipse cx="216" cy="110" rx="40" ry="48" />
+            <ellipse cx="296" cy="110" rx="40" ry="48" />
+            <ellipse cx="364" cy="166" rx="44" ry="52" />
+          </g>
+        </svg>
+
+        <h1
+          className="text-4xl font-bold mb-5 leading-tight"
+          style={{ color: '#E85B16', letterSpacing: '-0.01em' }}
+        >
           Каспер.<br />Крок за кроком.
         </h1>
-        <p className="text-base mb-2" style={{ color: '#CDE1D5' }}>
-          AI-супутник для поступового повернення у форму
+
+        <p
+          className="text-base mb-6 leading-snug max-w-xs"
+          style={{ color: '#FFF7EC' }}
+        >
+          AI-супутник<br />
+          для поступового повернення у форму
         </p>
-        <p className="text-sm mb-12" style={{ color: '#8BB8A8' }}>
+
+        <p
+          className="text-base font-semibold mb-12"
+          style={{ color: '#F39A2F', letterSpacing: '0.02em' }}
+        >
           Не рекорд. Ритм, що тримає.
         </p>
+
         <button
           onClick={next}
           className="w-full max-w-xs rounded-2xl text-base font-semibold"
