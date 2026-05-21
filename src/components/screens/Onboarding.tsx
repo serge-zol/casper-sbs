@@ -82,9 +82,9 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
         <img
           src={`${import.meta.env.BASE_URL}cat-paw.png`}
           alt="Сліди Каспера"
-          width={120}
+          width={80}
           className="mb-8"
-          style={{ width: 120, height: 'auto' }}
+          style={{ width: 80, height: 'auto' }}
         />
 
         <h1
