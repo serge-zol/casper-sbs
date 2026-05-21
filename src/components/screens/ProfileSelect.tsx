@@ -57,7 +57,6 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
               {p.medical.inRecovery ? '🟡 Режим відновлення' : '🟢 Звичайний режим'}
             </div>
           </div>
-          <span style={{ color: '#E85B16', fontSize: 24, lineHeight: 1 }}>›</span>
         </button>
       ))}
 

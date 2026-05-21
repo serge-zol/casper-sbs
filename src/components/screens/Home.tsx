@@ -103,7 +103,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
             </Button>
           ) : (
             <Button onClick={() => onNavigate('activity')}>
-              Почати сьогоднішній крок →
+              Почати сьогоднішній крок
             </Button>
           )}
         </div>

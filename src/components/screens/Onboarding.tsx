@@ -154,7 +154,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
 
       <div className="px-6 pb-10">
         <Button onClick={next} disabled={saving}>
-          {phase === 7 ? (saving ? 'Зберігаємо…' : <span>Почати <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', display: 'inline', verticalAlign: 'middle' }} /></span>) : 'Далі →'}
+          {phase === 7 ? (saving ? 'Зберігаємо…' : <span>Почати <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', display: 'inline', verticalAlign: 'middle' }} /></span>) : 'Далі'}
         </Button>
       </div>
     </div>

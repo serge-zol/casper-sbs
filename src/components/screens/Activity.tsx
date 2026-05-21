@@ -261,7 +261,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
         {phase === 'pre' && (
           <Button onClick={startSession}>
             {isOlena && pre.operationZoneDiscomfort ? 'Завершити — є дискомфорт' :
-             pre.pain ? 'Завершити — біль' : 'Поїхали →'}
+             pre.pain ? 'Завершити — біль' : 'Поїхали'}
           </Button>
         )}
         {phase === 'session' && (
@@ -269,7 +269,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
         )}
         {phase === 'post' && (
           <Button onClick={savePost} disabled={saving}>
-            {saving ? 'Зберігаємо…' : 'Зберегти →'}
+            {saving ? 'Зберігаємо…' : 'Зберегти'}
           </Button>
         )}
         {phase === 'done' && (

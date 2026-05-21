@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ChevronRight } from 'lucide-react'
 import type { Screen } from '@/App'
 import { db } from '@/db/db'
 import type { Activity, CheckIn, Profile } from '@/db/types'
@@ -163,7 +162,6 @@ function Card({
             {hasFlag && <span>🚩</span>}
           </div>
         </div>
-        <ChevronRight size={20} style={{ color: '#E85B16' }} />
       </div>
     </button>
   )
