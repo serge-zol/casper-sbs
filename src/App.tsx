@@ -6,6 +6,7 @@ import ProfileSelect from '@/components/screens/ProfileSelect'
 import Home from '@/components/screens/Home'
 import Activity from '@/components/screens/Activity'
 import Journal from '@/components/screens/Journal'
+import Settings from '@/components/screens/Settings'
 
 // Statistics has Recharts → ~150KB. Lazy to keep initial bundle small.
 const Statistics = lazy(() => import('@/components/screens/Statistics'))
@@ -56,6 +57,8 @@ function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: 
           <Statistics onNavigate={onNavigate} />
         </Suspense>
       )
+    case 'settings':
+      return <Settings onNavigate={onNavigate} />
     default:
       return <PlaceholderScreen screen={screen} onNavigate={onNavigate} />
   }
