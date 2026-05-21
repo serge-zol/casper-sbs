@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import { PawPrint } from 'lucide-react'
 import { db } from '@/db/db'
 import type { Profile } from '@/db/types'
 import Button from '@/components/ui/Button'
@@ -78,33 +79,21 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
         className="flex flex-col items-center justify-center px-8 text-center"
         style={{ minHeight: '100dvh', background: '#053E35' }}
       >
-        {/* Дві котячі лапки — слід ходи */}
-        <svg
-          viewBox="0 0 280 140"
-          width="180"
-          height="90"
-          className="mb-8"
-          aria-label="Сліди Каспера"
-        >
-          <g fill="#E85B16">
-            {/* Left footprint */}
-            <g transform="rotate(-12 70 90)">
-              <ellipse cx="70" cy="90"  rx="28" ry="22" />
-              <ellipse cx="38" cy="52"  rx="9"  ry="13" />
-              <ellipse cx="58" cy="38"  rx="9"  ry="13" />
-              <ellipse cx="82" cy="38"  rx="9"  ry="13" />
-              <ellipse cx="102" cy="52" rx="9"  ry="13" />
-            </g>
-            {/* Right footprint — slightly forward + opposite tilt */}
-            <g transform="translate(120 -8) rotate(10 70 90)">
-              <ellipse cx="70" cy="90"  rx="28" ry="22" />
-              <ellipse cx="38" cy="52"  rx="9"  ry="13" />
-              <ellipse cx="58" cy="38"  rx="9"  ry="13" />
-              <ellipse cx="82" cy="38"  rx="9"  ry="13" />
-              <ellipse cx="102" cy="52" rx="9"  ry="13" />
-            </g>
-          </g>
-        </svg>
+        {/* Сліди Каспера — Lucide PawPrint */}
+        <div className="flex items-center gap-2 mb-8" aria-label="Сліди Каспера">
+          <PawPrint
+            size={38}
+            color="#E85B16"
+            strokeWidth={1.6}
+            style={{ transform: 'rotate(-14deg)' }}
+          />
+          <PawPrint
+            size={38}
+            color="#E85B16"
+            strokeWidth={1.6}
+            style={{ transform: 'rotate(10deg) translateY(-10px)' }}
+          />
+        </div>
 
         <h1
           className="text-4xl font-bold mb-5 leading-tight"
