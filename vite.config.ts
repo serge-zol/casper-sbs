@@ -5,6 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
+  // GitHub Pages serves at /casper-sbs/ — must match repo name
+  base: '/casper-sbs/',
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') },
   },
@@ -16,7 +18,8 @@ export default defineConfig({
       manifest: {
         name: 'Каспер. Крок за кроком.',
         short_name: 'Каспер',
-        start_url: '/',
+        start_url: '/casper-sbs/',
+        scope: '/casper-sbs/',
         display: 'standalone',
         background_color: '#FFF7EC',
         theme_color: '#053E35',
@@ -30,7 +33,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        navigateFallback: '/index.html',
+        navigateFallback: '/casper-sbs/index.html',
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {

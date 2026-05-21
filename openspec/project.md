@@ -8,8 +8,14 @@
 **Каспер** — Mobile-first PWA-щоденник активності для пари (Серж і Олена), який допомагає поступово повернутись до регулярного руху через ходьбу. Фіксує активність, запитує самопочуття (pre/post-check) і дає щоденну рекомендацію на основі rule-based логіки.
 
 - **Слоган:** Не рекорд. Ритм, що тримає.
-- **Статус:** MVP v0.1 — в розробці (Фаза 3)
-- **Деплой:** Vercel / Netlify / Cloudflare Pages (статична збірка + HTTPS)
+- **Статус:** MVP v0.1 — готовий, всі 9 кроків закрито
+- **Репозиторій:** https://github.com/serge-zol/casper-sbs
+- **Live URL:** https://serge-zol.github.io/casper-sbs/ (GitHub Pages, автодеплой)
+- **Деплой:** GitHub Pages через Actions (`.github/workflows/deploy.yml`)
+  - `base: '/casper-sbs/'` у vite.config.ts
+  - `start_url` і `scope` у manifest = `/casper-sbs/`
+  - Workflow: push до `main` → install → test → build → upload-pages-artifact → deploy-pages
+- **Альтернативи деплою:** Vercel / Netlify / Cloudflare Pages (треба прибрати `base` для root-домена)
 
 ---
 
