@@ -63,7 +63,13 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
 
       {profiles.length >= 2 && (
         <button
-          onClick={() => selectProfile(profiles[0].id!, 'together')}
+          onClick={() => {
+            // Для Разом — використовуємо профіль з відновленням (він задає обережний темп),
+            // або profiles[0] якщо такого немає.
+            const recoveryProfile = profiles.find(p => p.medical.inRecovery)
+            const togetherProfile = recoveryProfile ?? profiles[0]
+            selectProfile(togetherProfile.id!, 'together')
+          }}
           className="w-full rounded-2xl px-5 py-4 mt-1 border text-left"
           style={{ background: '#FFF0E8', borderColor: '#E85B16', minHeight: 72 }}
         >
