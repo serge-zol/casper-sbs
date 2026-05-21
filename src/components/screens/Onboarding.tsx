@@ -1,5 +1,4 @@
 import { useState, type ReactNode } from 'react'
-import { PawPrint } from 'lucide-react'
 import { db } from '@/db/db'
 import type { Profile } from '@/db/types'
 import Button from '@/components/ui/Button'
@@ -79,21 +78,14 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
         className="flex flex-col items-center justify-center px-8 text-center"
         style={{ minHeight: '100dvh', background: '#053E35' }}
       >
-        {/* Сліди Каспера — Lucide PawPrint */}
-        <div className="flex items-center gap-2 mb-8" aria-label="Сліди Каспера">
-          <PawPrint
-            size={38}
-            color="#E85B16"
-            strokeWidth={1.6}
-            style={{ transform: 'rotate(-14deg)' }}
-          />
-          <PawPrint
-            size={38}
-            color="#E85B16"
-            strokeWidth={1.6}
-            style={{ transform: 'rotate(10deg) translateY(-10px)' }}
-          />
-        </div>
+        {/* Сліди Каспера */}
+        <img
+          src={`${import.meta.env.BASE_URL}cat-paw.png`}
+          alt="Сліди Каспера"
+          width={180}
+          className="mb-8"
+          style={{ width: 180, height: 'auto' }}
+        />
 
         <h1
           className="text-4xl font-bold mb-5 leading-tight"
