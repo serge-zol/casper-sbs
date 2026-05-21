@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
+import Onboarding from '@/components/screens/Onboarding'
+import ProfileSelect from '@/components/screens/ProfileSelect'
 
 export type Screen =
   | 'welcome'
@@ -14,8 +16,7 @@ export type Screen =
 const TAB_SCREENS: Screen[] = ['home', 'activity', 'journal', 'statistics']
 
 function getInitialScreen(): Screen {
-  const done = localStorage.getItem('onboardingDone')
-  return done ? 'profile-select' : 'welcome'
+  return localStorage.getItem('onboardingDone') ? 'profile-select' : 'welcome'
 }
 
 export default function App() {
@@ -23,7 +24,7 @@ export default function App() {
 
   return (
     <SafeAreaWrapper>
-      <ScreenPlaceholder screen={screen} onNavigate={setScreen} />
+      <ScreenRouter screen={screen} onNavigate={setScreen} />
       {TAB_SCREENS.includes(screen) && (
         <TabBar active={screen} onNavigate={setScreen} />
       )}
@@ -31,43 +32,47 @@ export default function App() {
   )
 }
 
-// Тимчасовий роутер — замінюється екранами у Кроках 2–8
-function ScreenPlaceholder({
-  screen,
-  onNavigate,
-}: {
-  screen: Screen
-  onNavigate: (s: Screen) => void
-}) {
-  const ALL_SCREENS: Screen[] = [
-    'welcome', 'profile-select', 'home',
-    'activity', 'journal', 'statistics', 'settings',
-  ]
+function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: Screen) => void }) {
+  switch (screen) {
+    case 'welcome':
+      return <Onboarding onComplete={() => onNavigate('profile-select')} />
+    case 'profile-select':
+      return <ProfileSelect onNavigate={onNavigate} />
+    default:
+      return <PlaceholderScreen screen={screen} onNavigate={onNavigate} />
+  }
+}
+
+function PlaceholderScreen({
+  screen, onNavigate,
+}: { screen: Screen; onNavigate: (s: Screen) => void }) {
+  const ALL: Screen[] = ['welcome', 'profile-select', 'home', 'activity', 'journal', 'statistics', 'settings']
 
   return (
     <div
-      className="flex flex-col items-center justify-center bg-casper-cream text-casper-graphite px-6"
+      className="flex flex-col items-center justify-center px-6"
       style={{
         minHeight: '100dvh',
+        background: '#FFF7EC',
         paddingBottom: TAB_SCREENS.includes(screen)
           ? 'calc(56px + env(safe-area-inset-bottom) + 16px)'
-          : '0',
+          : 0,
       }}
     >
       <span className="text-5xl mb-4">🐾</span>
-      <p className="text-xl font-semibold text-casper-dark-green mb-1">Каспер</p>
+      <p className="text-xl font-semibold mb-1" style={{ color: '#053E35' }}>Каспер</p>
       <p className="text-sm text-gray-400 mb-8">{screen}</p>
-
       <div className="flex flex-wrap gap-2 justify-center">
-        {ALL_SCREENS.map(s => (
+        {ALL.map(s => (
           <button
             key={s}
             onClick={() => onNavigate(s)}
-            className="px-3 py-1.5 rounded-full text-xs font-medium border"
+            className="rounded-full text-xs font-medium border px-3 py-1.5"
             style={{
               background: screen === s ? '#E85B16' : 'transparent',
               color: screen === s ? '#fff' : '#1F2A2E',
               borderColor: screen === s ? '#E85B16' : '#FCE7D2',
+              minHeight: 36,
             }}
           >
             {s}
