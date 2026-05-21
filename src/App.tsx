@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
@@ -6,6 +6,9 @@ import ProfileSelect from '@/components/screens/ProfileSelect'
 import Home from '@/components/screens/Home'
 import Activity from '@/components/screens/Activity'
 import Journal from '@/components/screens/Journal'
+
+// Statistics has Recharts → ~150KB. Lazy to keep initial bundle small.
+const Statistics = lazy(() => import('@/components/screens/Statistics'))
 
 export type Screen =
   | 'welcome'
@@ -47,6 +50,12 @@ function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: 
       return <Activity onNavigate={onNavigate} />
     case 'journal':
       return <Journal onNavigate={onNavigate} />
+    case 'statistics':
+      return (
+        <Suspense fallback={<div style={{minHeight:'100dvh',background:'#FFF7EC'}} className="flex items-center justify-center"><span className="text-3xl">🐾</span></div>}>
+          <Statistics onNavigate={onNavigate} />
+        </Suspense>
+      )
     default:
       return <PlaceholderScreen screen={screen} onNavigate={onNavigate} />
   }
