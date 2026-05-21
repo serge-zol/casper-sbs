@@ -4,6 +4,7 @@ import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
 import ProfileSelect from '@/components/screens/ProfileSelect'
 import Home from '@/components/screens/Home'
+import Activity from '@/components/screens/Activity'
 
 export type Screen =
   | 'welcome'
@@ -41,6 +42,8 @@ function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: 
       return <ProfileSelect onNavigate={onNavigate} />
     case 'home':
       return <Home onNavigate={onNavigate} />
+    case 'activity':
+      return <Activity onNavigate={onNavigate} />
     default:
       return <PlaceholderScreen screen={screen} onNavigate={onNavigate} />
   }
