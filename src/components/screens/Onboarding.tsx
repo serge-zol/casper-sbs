@@ -255,9 +255,23 @@ function Step2({ draft, update }: StepProps) {
         style={{ fontSize: 16, height: 52, borderColor: '#FCE7D2', background: '#fff', color: '#1F2A2E' }}
       />
       <Label>Вікова група</Label>
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex gap-1.5 mb-6">
         {ages.map(a => (
-          <Pill key={a} active={draft.ageGroup === a} onClick={() => update({ ageGroup: a })}>{a}</Pill>
+          <button
+            key={a}
+            onClick={() => update({ ageGroup: a })}
+            className="flex-1 rounded-full text-sm border text-center"
+            style={{
+              minHeight: 44,
+              padding: '8px 4px',
+              background: draft.ageGroup === a ? '#E85B16' : '#fff',
+              color: draft.ageGroup === a ? '#fff' : '#1F2A2E',
+              borderColor: draft.ageGroup === a ? '#E85B16' : '#FCE7D2',
+              fontWeight: draft.ageGroup === a ? 600 : 400,
+            }}
+          >
+            {a}
+          </button>
         ))}
       </div>
       <Label>Стать (необов'язково)</Label>
