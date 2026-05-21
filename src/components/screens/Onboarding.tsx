@@ -78,20 +78,31 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
         className="flex flex-col items-center justify-center px-8 text-center"
         style={{ minHeight: '100dvh', background: '#053E35' }}
       >
-        {/* Casper paw — fixed orange (no system emoji rendering) */}
+        {/* Дві котячі лапки — слід ходи */}
         <svg
-          viewBox="0 0 512 380"
-          width="128"
-          height="95"
+          viewBox="0 0 280 140"
+          width="180"
+          height="90"
           className="mb-8"
-          aria-label="Каспер"
+          aria-label="Сліди Каспера"
         >
           <g fill="#E85B16">
-            <ellipse cx="256" cy="290" rx="110" ry="85" />
-            <ellipse cx="148" cy="166" rx="44" ry="52" />
-            <ellipse cx="216" cy="110" rx="40" ry="48" />
-            <ellipse cx="296" cy="110" rx="40" ry="48" />
-            <ellipse cx="364" cy="166" rx="44" ry="52" />
+            {/* Left footprint */}
+            <g transform="rotate(-12 70 90)">
+              <ellipse cx="70" cy="90"  rx="28" ry="22" />
+              <ellipse cx="38" cy="52"  rx="9"  ry="13" />
+              <ellipse cx="58" cy="38"  rx="9"  ry="13" />
+              <ellipse cx="82" cy="38"  rx="9"  ry="13" />
+              <ellipse cx="102" cy="52" rx="9"  ry="13" />
+            </g>
+            {/* Right footprint — slightly forward + opposite tilt */}
+            <g transform="translate(120 -8) rotate(10 70 90)">
+              <ellipse cx="70" cy="90"  rx="28" ry="22" />
+              <ellipse cx="38" cy="52"  rx="9"  ry="13" />
+              <ellipse cx="58" cy="38"  rx="9"  ry="13" />
+              <ellipse cx="82" cy="38"  rx="9"  ry="13" />
+              <ellipse cx="102" cy="52" rx="9"  ry="13" />
+            </g>
           </g>
         </svg>
 
