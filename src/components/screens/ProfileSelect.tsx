@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/db/db'
 import type { Screen } from '@/App'
+import type { Profile } from '@/db/types'
+import ShareProfileModal from '@/components/ui/ShareProfileModal'
 
 export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   const profiles = useLiveQuery(() => db.profiles.toArray(), [])
+  const [sharingProfile, setSharingProfile] = useState<Profile | null>(null)
 
   function selectProfile(profileId: number, mode: 'solo' | 'together') {
     localStorage.setItem('activeProfileId', String(profileId))
@@ -39,51 +43,88 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
   const today = new Date().toLocaleDateString('uk-UA', { weekday: 'long', day: 'numeric', month: 'long' })
 
   return (
-    <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col px-6 pt-16 pb-10">
-      <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={40} className="mb-2" style={{ width: 40, height: 'auto' }} />
-      <h1 className="text-2xl font-bold mb-1" style={{ color: '#053E35' }}>Хто тренується?</h1>
-      <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>{today}</p>
+    <>
+      <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col px-6 pt-16 pb-10">
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={40} className="mb-2" style={{ width: 40, height: 'auto' }} />
+        <h1 className="text-2xl font-bold mb-1" style={{ color: '#053E35' }}>Хто тренується?</h1>
+        <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>{today}</p>
 
-      {profiles.map(p => (
-        <button
-          key={p.id}
-          onClick={() => selectProfile(p.id!, 'solo')}
-          className="w-full flex items-center justify-between rounded-2xl px-5 py-4 mb-3 border"
-          style={{ background: '#fff', borderColor: '#FCE7D2', minHeight: 72 }}
-        >
-          <div className="text-left">
-            <div className="font-semibold text-base" style={{ color: '#1F2A2E' }}>{p.name}</div>
-            <div className="text-xs mt-1" style={{ color: '#9CA3AF' }}>
-              {p.medical.inRecovery ? '🟡 Режим відновлення' : '🟢 Звичайний режим'}
-            </div>
+        {profiles.map(p => (
+          <div key={p.id} className="relative mb-3">
+            <button
+              onClick={() => selectProfile(p.id!, 'solo')}
+              className="w-full flex items-center justify-between rounded-2xl px-5 py-4 border"
+              style={{ background: '#fff', borderColor: '#FCE7D2', minHeight: 72 }}
+            >
+              <div className="text-left">
+                <div className="font-semibold text-base" style={{ color: '#1F2A2E' }}>{p.name}</div>
+                <div className="text-xs mt-1" style={{ color: '#9CA3AF' }}>
+                  {p.medical.inRecovery ? '🟡 Режим відновлення' : '🟢 Звичайний режим'}
+                </div>
+              </div>
+              {/* spacer so text doesn't overlap share button */}
+              <div style={{ width: 40 }} />
+            </button>
+
+            {/* Share / QR button */}
+            <button
+              onClick={e => { e.stopPropagation(); setSharingProfile(p) }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full"
+              style={{ width: 36, height: 36, background: '#FFF0E8', color: '#E85B16' }}
+              title="Поділитись профілем"
+            >
+              <QrIcon />
+            </button>
           </div>
-        </button>
-      ))}
+        ))}
 
-      {profiles.length >= 2 && (
+        {profiles.length >= 2 && (
+          <button
+            onClick={() => {
+              const recoveryProfile = profiles.find(p => p.medical.inRecovery)
+              const togetherProfile = recoveryProfile ?? profiles[0]
+              selectProfile(togetherProfile.id!, 'together')
+            }}
+            className="w-full rounded-2xl px-5 py-4 mt-1 border text-left"
+            style={{ background: '#FFF0E8', borderColor: '#E85B16', minHeight: 72 }}
+          >
+            <div className="font-semibold text-base" style={{ color: '#E85B16' }}>👣 Разом</div>
+            <div className="text-xs mt-1" style={{ color: '#F39A2F' }}>Спільна прогулянка для обох</div>
+          </button>
+        )}
+
         <button
-          onClick={() => {
-            // Для Разом — використовуємо профіль з відновленням (він задає обережний темп),
-            // або profiles[0] якщо такого немає.
-            const recoveryProfile = profiles.find(p => p.medical.inRecovery)
-            const togetherProfile = recoveryProfile ?? profiles[0]
-            selectProfile(togetherProfile.id!, 'together')
-          }}
-          className="w-full rounded-2xl px-5 py-4 mt-1 border text-left"
-          style={{ background: '#FFF0E8', borderColor: '#E85B16', minHeight: 72 }}
+          onClick={() => { localStorage.removeItem('onboardingDone'); onNavigate('welcome') }}
+          className="mt-8 text-xs"
+          style={{ color: '#9CA3AF', minHeight: 36 }}
         >
-          <div className="font-semibold text-base" style={{ color: '#E85B16' }}>👣 Разом</div>
-          <div className="text-xs mt-1" style={{ color: '#F39A2F' }}>Спільна прогулянка для обох</div>
+          + Додати ще один профіль
         </button>
-      )}
+      </div>
 
-      <button
-        onClick={() => { localStorage.removeItem('onboardingDone'); onNavigate('welcome') }}
-        className="mt-8 text-xs"
-        style={{ color: '#9CA3AF', minHeight: 36 }}
-      >
-        + Додати ще один профіль
-      </button>
-    </div>
+      {sharingProfile && (
+        <ShareProfileModal
+          profile={sharingProfile}
+          onClose={() => setSharingProfile(null)}
+        />
+      )}
+    </>
+  )
+}
+
+function QrIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none" />
+      <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none" />
+      <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none" />
+      <path d="M14 14h3v3h-3z" fill="currentColor" stroke="none" />
+      <path d="M17 14h4" />
+      <path d="M14 17v4" />
+      <path d="M17 17h4v4" />
+    </svg>
   )
 }

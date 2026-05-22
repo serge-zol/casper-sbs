@@ -1,12 +1,14 @@
-import { useState, lazy, Suspense } from 'react'
+import { useState, lazy, Suspense, useEffect } from 'react'
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
 import ProfileSelect from '@/components/screens/ProfileSelect'
+import ImportProfile from '@/components/screens/ImportProfile'
 import Home from '@/components/screens/Home'
 import Activity from '@/components/screens/Activity'
 import Journal from '@/components/screens/Journal'
 import Settings from '@/components/screens/Settings'
+import type { Profile } from '@/db/types'
 
 // Statistics has Recharts → ~150KB. Lazy to keep initial bundle small.
 const Statistics = lazy(() => import('@/components/screens/Statistics'))
@@ -14,6 +16,7 @@ const Statistics = lazy(() => import('@/components/screens/Statistics'))
 export type Screen =
   | 'welcome'
   | 'profile-select'
+  | 'import-profile'
   | 'home'
   | 'activity'
   | 'journal'
@@ -26,12 +29,40 @@ function getInitialScreen(): Screen {
   return localStorage.getItem('onboardingDone') ? 'profile-select' : 'welcome'
 }
 
+function parseImportParam(): Profile | null {
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const raw = params.get('import')
+    if (!raw) return null
+    return JSON.parse(decodeURIComponent(escape(atob(raw)))) as Profile
+  } catch {
+    return null
+  }
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>(getInitialScreen)
+  const [importedProfile, setImportedProfile] = useState<Profile | null>(null)
+
+  useEffect(() => {
+    const profile = parseImportParam()
+    if (profile) {
+      setImportedProfile(profile)
+      setScreen('import-profile')
+    }
+  }, [])
 
   return (
     <SafeAreaWrapper>
-      <ScreenRouter screen={screen} onNavigate={setScreen} />
+      <ScreenRouter
+        screen={screen}
+        importedProfile={importedProfile}
+        onNavigate={setScreen}
+        onImportDone={() => {
+          setImportedProfile(null)
+          setScreen('profile-select')
+        }}
+      />
       {TAB_SCREENS.includes(screen) && (
         <TabBar active={screen} onNavigate={setScreen} />
       )}
@@ -39,12 +70,37 @@ export default function App() {
   )
 }
 
-function ScreenRouter({ screen, onNavigate }: { screen: Screen; onNavigate: (s: Screen) => void }) {
+function ScreenRouter({
+  screen,
+  importedProfile,
+  onNavigate,
+  onImportDone,
+}: {
+  screen: Screen
+  importedProfile: Profile | null
+  onNavigate: (s: Screen) => void
+  onImportDone: () => void
+}) {
   switch (screen) {
     case 'welcome':
       return <Onboarding onComplete={() => onNavigate('profile-select')} />
     case 'profile-select':
       return <ProfileSelect onNavigate={onNavigate} />
+    case 'import-profile':
+      if (!importedProfile) {
+        onNavigate('profile-select')
+        return null
+      }
+      return (
+        <ImportProfile
+          profile={importedProfile}
+          onConfirm={onImportDone}
+          onCancel={() => {
+            window.history.replaceState({}, '', window.location.pathname)
+            onNavigate('profile-select')
+          }}
+        />
+      )
     case 'home':
       return <Home onNavigate={onNavigate} />
     case 'activity':
