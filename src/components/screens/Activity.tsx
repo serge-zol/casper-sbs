@@ -181,7 +181,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
     const today = new Date().toISOString().slice(0, 10)
     try {
       const id = await db.activities.add({
-        profileId: profile.id!,
+        profileId: profile!.id!,
         mode: mode === 'together' ? 'together' : 'solo',
         date: today,
         startTime: new Date().toISOString(),
@@ -193,7 +193,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
       setActivityId(newId)
       await db.checkins.add({
         activityId: newId,
-        profileId: profile.id!,
+        profileId: profile!.id!,
         type: 'before',
         date: today,
         sleep: pre.sleep,
