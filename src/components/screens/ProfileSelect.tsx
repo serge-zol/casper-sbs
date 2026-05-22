@@ -1,13 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/db/db'
 import type { Screen } from '@/App'
 import type { Profile } from '@/db/types'
 import ShareProfileModal from '@/components/ui/ShareProfileModal'
 
+function playCallPurr() {
+  try {
+    const ctx = new AudioContext()
+    const master = ctx.createGain()
+    master.gain.setValueAtTime(0.15, ctx.currentTime)
+    master.connect(ctx.destination)
+
+    const osc = ctx.createOscillator()
+    osc.type = 'sawtooth'
+    osc.frequency.setValueAtTime(90, ctx.currentTime)
+    osc.frequency.linearRampToValueAtTime(130, ctx.currentTime + 1.5)
+
+    const lfo = ctx.createOscillator()
+    lfo.frequency.setValueAtTime(15, ctx.currentTime)
+    const lfoGain = ctx.createGain()
+    lfoGain.gain.setValueAtTime(30, ctx.currentTime)
+    lfo.connect(lfoGain)
+    lfoGain.connect(osc.frequency)
+
+    const env = ctx.createGain()
+    env.gain.setValueAtTime(0, ctx.currentTime)
+    env.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05)
+    env.gain.setValueAtTime(1, ctx.currentTime + 1.3)
+    env.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
+
+    osc.connect(env)
+    env.connect(master)
+
+    lfo.start(ctx.currentTime)
+    osc.start(ctx.currentTime)
+    osc.stop(ctx.currentTime + 1.8)
+    lfo.stop(ctx.currentTime + 1.8)
+
+    osc.onended = () => ctx.close()
+  } catch {
+    // AudioContext недоступний
+  }
+}
+
 export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   const profiles = useLiveQuery(() => db.profiles.toArray(), [])
   const [sharingProfile, setSharingProfile] = useState<Profile | null>(null)
+
+  useEffect(() => {
+    playCallPurr()
+    const id = setInterval(playCallPurr, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   function selectProfile(profileId: number, mode: 'solo' | 'together') {
     localStorage.setItem('activeProfileId', String(profileId))
@@ -47,7 +92,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col px-6 pt-16 pb-10">
         <div className="flex items-center mb-1" style={{ gap: 12 }}>
           <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto', flexShrink: 0 }} />
-          <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Хто тренується?</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Хм-м-м... я вже чекаю. Хто йде?</h1>
         </div>
         <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>{today}</p>
 
