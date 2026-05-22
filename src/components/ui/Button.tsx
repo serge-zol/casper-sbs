@@ -8,6 +8,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button({ variant = 'primary', children, style, ...props }: Props) {
   return (
     <button
+      type="button"
       {...props}
       style={{
         width: '100%',

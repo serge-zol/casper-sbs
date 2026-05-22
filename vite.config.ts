@@ -11,6 +11,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     // resolve.alias успадковується з vite resolve нижче
   },
+  define: {
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString().slice(0, 16).replace('T', ' ')),
+  },
   // GitHub Pages serves at /casper-sbs/ — must match repo name
   base: '/casper-sbs/',
   resolve: {

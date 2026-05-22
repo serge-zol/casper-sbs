@@ -164,48 +164,51 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
   // ───────── Phase: PRE ─────────
   async function startSession() {
     userGestureRef.current = true
-    if (!profile?.id) return
     // Якщо у Олени дискомфорт зони — миттєвий rest
     if (isOlena && pre.operationZoneDiscomfort) {
-      await saveSafetyFlag('Дискомфорт у зоні операції перед стартом')
+      try { await saveSafetyFlag('Дискомфорт у зоні операції перед стартом') } catch {}
       setPhase('done')
       setPost({ ...DEFAULT_POST, redFlags: ['Дискомфорт зони операції'], feeling: 'worse' })
       return
     }
     if (pre.pain) {
-      await saveSafetyFlag('Біль перед стартом')
+      try { await saveSafetyFlag('Біль перед стартом') } catch {}
       setPhase('done')
       setPost({ ...DEFAULT_POST, redFlags: ['Біль перед стартом'], feeling: 'worse' })
       return
     }
-    // Створюємо Activity + before-CheckIn
+    // Пишемо в DB; помилка DB не блокує старт тренування
     const today = new Date().toISOString().slice(0, 10)
-    const id = await db.activities.add({
-      profileId: profile.id,
-      mode: mode === 'together' ? 'together' : 'solo',
-      date: today,
-      startTime: new Date().toISOString(),
-      duration: 0,
-      isRestDay: false,
-      safetyLevel: rec?.cautionLevel ?? 'green',
-    } as ActivityRow)
-    const newId = id as number
-    setActivityId(newId)
-    await db.checkins.add({
-      activityId: newId,
-      profileId: profile.id,
-      type: 'before',
-      date: today,
-      sleep: pre.sleep,
-      fatigue: pre.fatigue,
-      readiness: pre.readiness,
-      mood: pre.mood,
-      pain: pre.pain,
-      painDetails: pre.painDetails || undefined,
-      conditions: pre.conditions,
-      operationZoneDiscomfort: isOlena ? pre.operationZoneDiscomfort : undefined,
-      redFlags: [],
-    } as CheckIn)
+    try {
+      const id = await db.activities.add({
+        profileId: profile.id!,
+        mode: mode === 'together' ? 'together' : 'solo',
+        date: today,
+        startTime: new Date().toISOString(),
+        duration: 0,
+        isRestDay: false,
+        safetyLevel: rec?.cautionLevel ?? 'green',
+      } as ActivityRow)
+      const newId = id as number
+      setActivityId(newId)
+      await db.checkins.add({
+        activityId: newId,
+        profileId: profile.id!,
+        type: 'before',
+        date: today,
+        sleep: pre.sleep,
+        fatigue: pre.fatigue,
+        readiness: pre.readiness,
+        mood: pre.mood,
+        pain: pre.pain,
+        painDetails: pre.painDetails || undefined,
+        conditions: pre.conditions,
+        operationZoneDiscomfort: isOlena ? pre.operationZoneDiscomfort : undefined,
+        redFlags: [],
+      } as CheckIn)
+    } catch (err) {
+      console.error('[startSession] DB write failed:', err)
+    }
     setPhase('session')
     setTimeout(startTimer, 0)
   }

@@ -1,4 +1,6 @@
 import { useState, lazy, Suspense, useEffect } from 'react'
+
+declare const __BUILD_TIME__: string
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
@@ -68,10 +70,11 @@ export default function App() {
       )}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
-        fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'center',
-        padding: '2px 0', pointerEvents: 'none',
+        fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'right',
+        fontStyle: 'italic', padding: '2px 0', paddingRight: 8,
+        pointerEvents: 'none',
       }}>
-        Каспер · Крок за кроком · v0.1-mvp
+        Каспер · v0.1 · {__BUILD_TIME__}
       </div>
     </SafeAreaWrapper>
   )
