@@ -8,37 +8,46 @@ import ShareProfileModal from '@/components/ui/ShareProfileModal'
 function playCallPurr() {
   try {
     const ctx = new AudioContext()
-    const master = ctx.createGain()
-    master.gain.setValueAtTime(0.15, ctx.currentTime)
-    master.connect(ctx.destination)
 
-    const osc = ctx.createOscillator()
-    osc.type = 'sawtooth'
-    osc.frequency.setValueAtTime(90, ctx.currentTime)
-    osc.frequency.linearRampToValueAtTime(130, ctx.currentTime + 1.5)
+    const play = () => {
+      const master = ctx.createGain()
+      master.gain.setValueAtTime(0.15, ctx.currentTime)
+      master.connect(ctx.destination)
 
-    const lfo = ctx.createOscillator()
-    lfo.frequency.setValueAtTime(15, ctx.currentTime)
-    const lfoGain = ctx.createGain()
-    lfoGain.gain.setValueAtTime(30, ctx.currentTime)
-    lfo.connect(lfoGain)
-    lfoGain.connect(osc.frequency)
+      const osc = ctx.createOscillator()
+      osc.type = 'sawtooth'
+      osc.frequency.setValueAtTime(90, ctx.currentTime)
+      osc.frequency.linearRampToValueAtTime(130, ctx.currentTime + 1.5)
 
-    const env = ctx.createGain()
-    env.gain.setValueAtTime(0, ctx.currentTime)
-    env.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05)
-    env.gain.setValueAtTime(1, ctx.currentTime + 1.3)
-    env.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
+      const lfo = ctx.createOscillator()
+      lfo.frequency.setValueAtTime(15, ctx.currentTime)
+      const lfoGain = ctx.createGain()
+      lfoGain.gain.setValueAtTime(30, ctx.currentTime)
+      lfo.connect(lfoGain)
+      lfoGain.connect(osc.frequency)
 
-    osc.connect(env)
-    env.connect(master)
+      const env = ctx.createGain()
+      env.gain.setValueAtTime(0, ctx.currentTime)
+      env.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05)
+      env.gain.setValueAtTime(1, ctx.currentTime + 1.3)
+      env.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
 
-    lfo.start(ctx.currentTime)
-    osc.start(ctx.currentTime)
-    osc.stop(ctx.currentTime + 1.8)
-    lfo.stop(ctx.currentTime + 1.8)
+      osc.connect(env)
+      env.connect(master)
 
-    osc.onended = () => ctx.close()
+      lfo.start(ctx.currentTime)
+      osc.start(ctx.currentTime)
+      osc.stop(ctx.currentTime + 1.8)
+      lfo.stop(ctx.currentTime + 1.8)
+
+      osc.onended = () => ctx.close()
+    }
+
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(play).catch(() => ctx.close())
+    } else {
+      play()
+    }
   } catch {
     // AudioContext недоступний
   }
