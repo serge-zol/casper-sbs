@@ -88,7 +88,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
               </p>
               {rec.safetyNotes && (
                 <p className="flex items-center gap-1.5 text-xs mt-2" style={{ color: '#053E35' }}>
-                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(18%) sepia(40%) saturate(500%) hue-rotate(118deg) brightness(60%)' }} />
+                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
                   {rec.safetyNotes}
                 </p>
               )}
