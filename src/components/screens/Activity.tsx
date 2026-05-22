@@ -642,14 +642,14 @@ function PostPhase({
       )}
 
       <Label>Тривожні симптоми (якщо були)</Label>
-      <div className="flex flex-wrap gap-2">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
         {RED_FLAG_OPTIONS.map(flag => {
           const active = post.redFlags.includes(flag)
           return (
             <button
               key={flag}
               onClick={() => toggleFlag(flag)}
-              className="rounded-full text-xs border px-3 py-2"
+              className="rounded-full text-xs border px-3 py-2 text-center"
               style={{
                 minHeight: 36,
                 background: active ? '#E85B16' : '#fff',

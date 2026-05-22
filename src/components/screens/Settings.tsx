@@ -267,8 +267,8 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function Pill({
-  active, onClick, children,
-}: { active: boolean; onClick: () => void; children: ReactNode }) {
+  active, onClick, children, style: extraStyle,
+}: { active: boolean; onClick: () => void; children: ReactNode; style?: React.CSSProperties }) {
   return (
     <button
       onClick={onClick}
@@ -278,6 +278,7 @@ function Pill({
         background: active ? '#E85B16' : '#fff',
         color: active ? '#fff' : '#1F2A2E',
         borderColor: active ? '#E85B16' : '#FCE7D2',
+        ...extraStyle,
       }}
     >
       {children}
@@ -294,9 +295,9 @@ function Pills({
   labels?: Record<string, string>
 }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div style={{ display: 'flex', gap: 8 }}>
       {options.map(o => (
-        <Pill key={o} active={value === o} onClick={() => onChange(o)}>
+        <Pill key={o} active={value === o} onClick={() => onChange(o)} style={{ flex: 1 }}>
           {labels?.[o] ?? o}
         </Pill>
       ))}

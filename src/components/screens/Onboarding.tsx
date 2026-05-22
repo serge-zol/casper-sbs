@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type ReactNode, type CSSProperties } from 'react'
 import { db } from '@/db/db'
 import type { Profile } from '@/db/types'
 import Button from '@/components/ui/Button'
@@ -183,8 +183,8 @@ function Sub({ children }: { children: ReactNode }) {
 }
 
 function Pill({
-  active, onClick, children,
-}: { active: boolean; onClick: () => void; children: ReactNode }) {
+  active, onClick, children, style: extraStyle,
+}: { active: boolean; onClick: () => void; children: ReactNode; style?: CSSProperties }) {
   return (
     <button
       onClick={onClick}
@@ -195,6 +195,7 @@ function Pill({
         color: active ? '#fff' : '#1F2A2E',
         borderColor: active ? '#E85B16' : '#FCE7D2',
         fontWeight: active ? 600 : 400,
+        ...extraStyle,
       }}
     >
       {children}
@@ -428,7 +429,7 @@ function Step5({ draft, update }: StepProps) {
     <>
       <Heading>Що для вас важливо?</Heading>
       <Sub>Оберіть одне або кілька</Sub>
-      <div className="flex flex-wrap gap-2">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
         {GOALS.map(g => (
           <Pill key={g} active={draft.goals.includes(g)} onClick={() => toggle(g)}>{g}</Pill>
         ))}
@@ -452,21 +453,21 @@ function Step6({ draft, update }: StepProps) {
       <Heading>Розклад</Heading>
       <Sub>Каспер врахує ваш ритм</Sub>
       <Label>Тривалість прогулянки</Label>
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         {mins.map(([v, l]) => (
-          <Pill key={l} active={draft.targetMinutes === v} onClick={() => update({ targetMinutes: v })}>{l}</Pill>
+          <Pill key={l} active={draft.targetMinutes === v} onClick={() => update({ targetMinutes: v })} style={{ flex: 1 }}>{l}</Pill>
         ))}
       </div>
       <Label>Час доби</Label>
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         {times.map(([v, l]) => (
-          <Pill key={v} active={draft.timeOfDay === v} onClick={() => update({ timeOfDay: v })}>{l}</Pill>
+          <Pill key={v} active={draft.timeOfDay === v} onClick={() => update({ timeOfDay: v })} style={{ flex: 1 }}>{l}</Pill>
         ))}
       </div>
       <Label>Тренувань на тиждень</Label>
-      <div className="flex flex-wrap gap-2">
+      <div style={{ display: 'flex', gap: 8 }}>
         {days.map(([v, l]) => (
-          <Pill key={v} active={draft.daysPerWeek === v} onClick={() => update({ daysPerWeek: v })}>{l}</Pill>
+          <Pill key={v} active={draft.daysPerWeek === v} onClick={() => update({ daysPerWeek: v })} style={{ flex: 1 }}>{l}</Pill>
         ))}
       </div>
     </>
