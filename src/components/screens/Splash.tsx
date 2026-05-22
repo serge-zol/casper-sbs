@@ -2,15 +2,7 @@ import { useEffect } from 'react'
 import type { Screen } from '@/App'
 
 export default function Splash({ onNavigate }: { onNavigate: (s: Screen) => void }) {
-  useEffect(() => {
-    const timer = setTimeout(advance, 1800)
-    return () => clearTimeout(timer)
-
-    function advance() {
-      const lastProfileId = localStorage.getItem('lastProfileId')
-      onNavigate(lastProfileId ? 'home' : 'profile-select')
-    }
-  }, [onNavigate])
+  useEffect(() => {}, [])
 
   function handleTap() {
     const lastProfileId = localStorage.getItem('lastProfileId')

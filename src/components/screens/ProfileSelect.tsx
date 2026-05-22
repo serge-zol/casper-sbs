@@ -10,37 +10,40 @@ function playCallPurr() {
     const ctx = new AudioContext()
 
     const play = () => {
-      const master = ctx.createGain()
-      master.gain.setValueAtTime(0.15, ctx.currentTime)
-      master.connect(ctx.destination)
+      const carrier = ctx.createOscillator()
+      carrier.type = 'triangle'
+      carrier.frequency.setValueAtTime(27, ctx.currentTime)
+      carrier.frequency.linearRampToValueAtTime(34, ctx.currentTime + 1.5)
 
-      const osc = ctx.createOscillator()
-      osc.type = 'sawtooth'
-      osc.frequency.setValueAtTime(90, ctx.currentTime)
-      osc.frequency.linearRampToValueAtTime(130, ctx.currentTime + 1.5)
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'lowpass'
+      filter.frequency.value = 250
+      filter.Q.value = 1
+
+      const envGain = ctx.createGain()
+      envGain.gain.setValueAtTime(0, ctx.currentTime)
+      envGain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.1)
+      envGain.gain.setValueAtTime(0.10, ctx.currentTime + 1.4)
+      envGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
 
       const lfo = ctx.createOscillator()
-      lfo.frequency.setValueAtTime(15, ctx.currentTime)
-      const lfoGain = ctx.createGain()
-      lfoGain.gain.setValueAtTime(30, ctx.currentTime)
-      lfo.connect(lfoGain)
-      lfoGain.connect(osc.frequency)
+      lfo.type = 'sine'
+      lfo.frequency.value = 5
+      const lfoDepth = ctx.createGain()
+      lfoDepth.gain.value = 0.03
 
-      const env = ctx.createGain()
-      env.gain.setValueAtTime(0, ctx.currentTime)
-      env.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05)
-      env.gain.setValueAtTime(1, ctx.currentTime + 1.3)
-      env.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
+      carrier.connect(filter)
+      filter.connect(envGain)
+      envGain.connect(ctx.destination)
+      lfo.connect(lfoDepth)
+      lfoDepth.connect(envGain.gain)
 
-      osc.connect(env)
-      env.connect(master)
-
+      carrier.start(ctx.currentTime)
       lfo.start(ctx.currentTime)
-      osc.start(ctx.currentTime)
-      osc.stop(ctx.currentTime + 1.8)
+      carrier.stop(ctx.currentTime + 1.8)
       lfo.stop(ctx.currentTime + 1.8)
 
-      osc.onended = () => ctx.close()
+      carrier.onended = () => ctx.close()
     }
 
     if (ctx.state === 'suspended') {

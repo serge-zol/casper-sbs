@@ -8,37 +8,37 @@ import { useRecommendation } from '@/hooks/useRecommendation'
 import Button from '@/components/ui/Button'
 import { pickPhrase } from '@/logic/casperPhrases'
 
-// Синтез муркотіння через Web Audio API — 28Hz sawtooth + 25Hz square gate
+// М'яке котяче муркотіння: triangle ~27Hz + lowpass 250Hz + sine LFO 5Hz
 function playPurr(): () => void {
   try {
     const ctx = new AudioContext()
 
     const carrier = ctx.createOscillator()
-    carrier.type = 'sawtooth'
-    carrier.frequency.value = 28  // глоточний румбл ~25-30Hz
+    carrier.type = 'triangle'
+    carrier.frequency.value = 27
 
-    const gateGain = ctx.createGain()
-    gateGain.gain.value = 0       // LFO керує відкриттям
+    const filter = ctx.createBiquadFilter()
+    filter.type = 'lowpass'
+    filter.frequency.value = 250
+    filter.Q.value = 1
 
-    const masterGain = ctx.createGain()
-    masterGain.gain.value = 0.13
+    // Envelope gain: fade-in 0.3s
+    const envGain = ctx.createGain()
+    envGain.gain.setValueAtTime(0, ctx.currentTime)
+    envGain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.3)
 
+    // LFO: повільне "вдих-видих" 5Hz, глибина ±0.03
     const lfo = ctx.createOscillator()
-    lfo.type = 'square'
-    lfo.frequency.value = 25      // 25 пульсів/с — класика муркотіння
+    lfo.type = 'sine'
+    lfo.frequency.value = 5
+    const lfoDepth = ctx.createGain()
+    lfoDepth.gain.value = 0.03
 
-    // WaveShaper: перетворює LFO -1..1 → 0..1 (уніполярний gate)
-    const shaper = ctx.createWaveShaper()
-    const n = 256
-    const curve = new Float32Array(n)
-    for (let i = 0; i < n; i++) curve[i] = i / (n - 1)
-    shaper.curve = curve
-
-    lfo.connect(shaper)
-    shaper.connect(gateGain.gain)
-    carrier.connect(gateGain)
-    gateGain.connect(masterGain)
-    masterGain.connect(ctx.destination)
+    carrier.connect(filter)
+    filter.connect(envGain)
+    envGain.connect(ctx.destination)
+    lfo.connect(lfoDepth)
+    lfoDepth.connect(envGain.gain)
 
     carrier.start()
     lfo.start()
