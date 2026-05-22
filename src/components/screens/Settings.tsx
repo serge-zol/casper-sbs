@@ -223,7 +223,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
           />
           <p className="text-xs" style={{ color: '#9CA3AF' }}>За замовчуванням: вимкнено</p>
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid #FCE7D2' }}>
-            <Row label="Версія" value={__BUILD_LABEL__.split(' ').slice(0, 5).join(' ')} italic />
+            <Row label="Версія" value={__BUILD_LABEL__.split(' ').slice(0, 5).join(' ')} />
             <Row label="Мова" value="Українська" />
             <Row label="Сховище" value="IndexedDB (локально)" />
           </div>
