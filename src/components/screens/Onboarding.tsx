@@ -346,8 +346,9 @@ function Step4({ draft, update }: StepProps) {
       <Sub>Це впливає на кожну рекомендацію Каспера</Sub>
 
       {draft.mode === 'olena' && (
-        <div className="rounded-2xl px-4 py-3 mb-4 text-sm" style={{ background: '#CDE1D5', color: '#053E35' }}>
-          ⚠️ Режим відновлення. Перед кожним тренуванням Каспер запитає стан зони операції.
+        <div className="rounded-2xl px-4 py-3 mb-4 text-sm flex items-center gap-2" style={{ background: '#CDE1D5', color: '#053E35' }}>
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(18%) sepia(40%) saturate(500%) hue-rotate(118deg) brightness(60%)' }} />
+          Режим відновлення. Перед кожним тренуванням Каспер запитає стан зони операції.
         </div>
       )}
 
