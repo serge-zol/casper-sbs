@@ -93,13 +93,6 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
           </button>
         )}
 
-        <button
-          onClick={() => { localStorage.removeItem('onboardingDone'); onNavigate('welcome') }}
-          className="mt-8 text-xs"
-          style={{ color: '#9CA3AF', minHeight: 36 }}
-        >
-          + Додати ще один профіль
-        </button>
       </div>
 
       {sharingProfile && (
