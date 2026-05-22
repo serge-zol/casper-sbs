@@ -1,4 +1,6 @@
 import { useState, type ReactNode } from 'react'
+
+declare const __BUILD_LABEL__: string
 import type { Screen } from '@/App'
 import { db } from '@/db/db'
 import type { Profile } from '@/db/types'
@@ -221,7 +223,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
           />
           <p className="text-xs" style={{ color: '#9CA3AF' }}>За замовчуванням: вимкнено</p>
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid #FCE7D2' }}>
-            <Row label="Версія" value="0.1.0 (MVP)" />
+            <Row label="Версія" value={__BUILD_LABEL__} />
             <Row label="Мова" value="Українська" />
             <Row label="Сховище" value="IndexedDB (локально)" />
           </div>
@@ -295,9 +297,10 @@ function Pills({
   labels?: Record<string, string>
 }) {
   return (
-    <div style={{ display: 'flex', gap: 8 }}>
+    <div style={{ display: 'flex', gap: 4 }}>
       {options.map(o => (
-        <Pill key={o} active={value === o} onClick={() => onChange(o)} style={{ flex: 1 }}>
+        <Pill key={o} active={value === o} onClick={() => onChange(o)}
+          style={{ flex: 1, flexShrink: 0, padding: '6px 2px', fontSize: 13, whiteSpace: 'nowrap' }}>
           {labels?.[o] ?? o}
         </Pill>
       ))}
