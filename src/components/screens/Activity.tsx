@@ -339,7 +339,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
                     width={24}
                     style={{
                       width: 24, height: 'auto',
-                      filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)',
+                      filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white)',
                       animation: 'pawBlink 0.9s ease-in-out infinite',
                       animationDelay: `${delay}s`,
                     }}
