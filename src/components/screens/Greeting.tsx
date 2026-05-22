@@ -43,7 +43,10 @@ export default function Greeting({ profile, onDone }: { profile: Profile; onDone
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={() => onDoneRef.current()}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onDoneRef.current() }}
       className="flex flex-col items-center justify-center px-8 text-center"
       style={{ minHeight: '100dvh', background: '#053E35', cursor: 'pointer' }}
     >

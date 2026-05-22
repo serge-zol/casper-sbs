@@ -50,7 +50,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
           <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto', flexShrink: 0 }} />
           <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Хм-м-м... я вже чекаю. Хто йде?</h1>
         </div>
-        <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>{today}</p>
+        <p className="text-sm mb-8" style={{ color: '#666666' }}>{today}</p>
 
         {profiles.map(p => (
           <div key={p.id} className="relative mb-3">
@@ -61,7 +61,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
             >
               <div className="text-left">
                 <div className="font-semibold text-base" style={{ color: '#1F2A2E' }}>{p.name}</div>
-                <div className="text-xs mt-1" style={{ color: '#9CA3AF' }}>
+                <div className="text-xs mt-1" style={{ color: '#666666' }}>
                   {p.medical.inRecovery ? '🟡 Режим відновлення' : '🟢 Звичайний режим'}
                 </div>
               </div>
@@ -74,6 +74,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
               onClick={e => { e.stopPropagation(); setSharingProfile(p) }}
               className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full"
               style={{ width: 36, height: 36, background: '#FFF0E8', color: '#E85B16' }}
+              aria-label="Поділитись профілем"
               title="Поділитись профілем"
             >
               <QrIcon />

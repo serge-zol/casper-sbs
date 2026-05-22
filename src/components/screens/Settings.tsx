@@ -82,6 +82,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
     >
       <header className="flex items-center px-5 pt-12 pb-3 gap-3">
         <button onClick={() => onNavigate('home')}
+          aria-label="Назад"
           style={{ minWidth: 44, minHeight: 44, color: '#053E35' }}
           className="flex items-center justify-center text-2xl">‹</button>
         <h1 className="text-2xl font-bold flex-1" style={{ color: '#053E35' }}>Налаштування</h1>
@@ -92,6 +93,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
         <Section title="Профіль">
           <Field label="Ім'я">
             <input
+              aria-label="Ім'я"
               value={profile.name}
               onChange={e => patch({ name: e.target.value })}
               className="w-full rounded-xl border px-3 outline-none"
@@ -158,6 +160,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
               </Field>
               <Field label="Заборони лікаря">
                 <textarea
+                  aria-label="Заборони лікаря"
                   value={profile.medical.prohibitions}
                   onChange={e => patchMedical({ prohibitions: e.target.value })}
                   placeholder="Наприклад: не бігти, пульс не вище 120"
@@ -168,6 +171,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
               </Field>
               <Field label="Нотатки лікаря">
                 <textarea
+                  aria-label="Нотатки лікаря"
                   value={profile.medical.doctorNotes ?? ''}
                   onChange={e => patchMedical({ doctorNotes: e.target.value })}
                   placeholder="Цитати, рекомендації"
@@ -178,7 +182,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
               </Field>
             </>
           )}
-          <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-2" style={{ color: '#666666' }}>
             🔒 Дані Олени не видно Сержу ніде. Тільки статус «режим відновлення» у спільній статистиці.
           </p>
         </Section>
@@ -222,7 +226,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
             value={soundEnabled}
             onChange={toggleSound}
           />
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>За замовчуванням: вимкнено</p>
+          <p className="text-xs" style={{ color: '#666666' }}>За замовчуванням: вимкнено</p>
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid #FCE7D2' }}>
             <Row label="Версія" value={__BUILD_LABEL__.split(' ').slice(0, 5).join(' ')} />
             <Row label="Мова" value="Українська" />
@@ -316,6 +320,9 @@ function ToggleRow({
     <div className="flex items-center justify-between gap-3">
       <span className="text-sm" style={{ color: '#1F2A2E' }}>{label}</span>
       <button
+        role="switch"
+        aria-checked={value}
+        aria-label={label}
         onClick={() => onChange(!value)}
         className="rounded-full"
         style={{
@@ -338,7 +345,7 @@ function ToggleRow({
 function Row({ label, value, italic }: { label: string; value: string; italic?: boolean }) {
   return (
     <div className="flex justify-between gap-3 text-sm py-1">
-      <span style={{ color: '#9CA3AF' }}>{label}</span>
+      <span style={{ color: '#666666' }}>{label}</span>
       <span className="font-medium" style={{ color: '#1F2A2E', fontStyle: italic ? 'italic' : 'normal' }}>{value}</span>
     </div>
   )

@@ -138,7 +138,7 @@ function PersonalView({
     <div className="space-y-4 pb-4">
       {/* Прогрес — вгорі */}
       <Card title="Прогрес тижня">
-        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs mb-2" style={{ color: '#666666' }}>
           Ціль: {profile.schedule.targetMinutes} хв × {targetLabel}
         </p>
         <div className="h-2 rounded-full mb-1" style={{ background: '#FCE7D2' }}>
@@ -161,8 +161,8 @@ function PersonalView({
         <div style={{ width: '100%', height: 140 }}>
           <ResponsiveContainer>
             <BarChart data={chartData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
-              <XAxis dataKey="d" tick={{ fontSize: 10, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="d" tick={{ fontSize: 10, fill: '#666666' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 10, fill: '#666666' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #FCE7D2', fontSize: 12 }} />
               <Bar dataKey="mins" fill="#E85B16" radius={[6, 6, 0, 0]} />
             </BarChart>
@@ -175,8 +175,8 @@ function PersonalView({
           <div style={{ width: '100%', height: 120 }}>
             <ResponsiveContainer>
               <LineChart data={moodData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
-                <XAxis dataKey="d" tick={{ fontSize: 10, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
-                <YAxis domain={[0, 5]} tick={{ fontSize: 10, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="d" tick={{ fontSize: 10, fill: '#666666' }} axisLine={false} tickLine={false} />
+                <YAxis domain={[0, 5]} tick={{ fontSize: 10, fill: '#666666' }} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #FCE7D2', fontSize: 12 }} />
                 <Line type="monotone" dataKey="m" stroke="#F39A2F" strokeWidth={2} dot={{ r: 3, fill: '#F39A2F' }} />
               </LineChart>
@@ -230,7 +230,7 @@ function TogetherView({ activities }: { activities: Activity[] }) {
         <p className="text-base font-semibold mb-1" style={{ color: '#053E35' }}>
           Спільних прогулянок ще не було
         </p>
-        <p className="text-sm" style={{ color: '#9CA3AF' }}>
+        <p className="text-sm" style={{ color: '#666666' }}>
           Оберіть «Разом» при виборі профілю
         </p>
       </div>
@@ -265,7 +265,7 @@ function TogetherView({ activities }: { activities: Activity[] }) {
             )
           })}
         </div>
-        <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs mt-2" style={{ color: '#666666' }}>
           Кожен стовпчик = тиждень
         </p>
       </Card>
@@ -290,10 +290,10 @@ function dayBack(n: number): string {
 function KPI({ label, value, suffix }: { label: string; value: number | string; suffix?: string }) {
   return (
     <div className="rounded-2xl p-4 border" style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-      <p className="text-xs uppercase tracking-wider" style={{ color: '#9CA3AF' }}>{label}</p>
+      <p className="text-xs uppercase tracking-wider" style={{ color: '#666666' }}>{label}</p>
       <p className="mt-1">
         <span className="text-2xl font-bold" style={{ color: '#053E35' }}>{value}</span>
-        {suffix && <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>{suffix}</span>}
+        {suffix && <span className="text-xs ml-1" style={{ color: '#666666' }}>{suffix}</span>}
       </p>
     </div>
   )
@@ -302,7 +302,7 @@ function KPI({ label, value, suffix }: { label: string; value: number | string; 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl p-4 border" style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-      <p className="text-xs uppercase font-semibold tracking-wider mb-3" style={{ color: '#9CA3AF' }}>{title}</p>
+      <p className="text-xs uppercase font-semibold tracking-wider mb-3" style={{ color: '#666666' }}>{title}</p>
       {children}
     </div>
   )
@@ -311,7 +311,7 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3 text-sm py-1">
-      <span style={{ color: '#9CA3AF' }}>{label}</span>
+      <span style={{ color: '#666666' }}>{label}</span>
       <span className="font-medium" style={{ color: '#1F2A2E' }}>{value}</span>
     </div>
   )

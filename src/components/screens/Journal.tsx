@@ -140,7 +140,7 @@ function Card({
     >
       <div className="flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <p className="text-xs capitalize" style={{ color: '#9CA3AF' }}>{dateLabel}</p>
+          <p className="text-xs capitalize" style={{ color: '#666666' }}>{dateLabel}</p>
           <p className="text-base font-semibold mt-0.5" style={{ color: '#1F2A2E' }}>
             {modeLabel} · {activity.duration} хв
           </p>
@@ -164,7 +164,7 @@ function EmptyState({ onStart, hasAny }: { onStart: () => void; hasAny: boolean 
       <p className="text-base font-semibold mb-1" style={{ color: '#053E35' }}>
         {hasAny ? 'У цьому фільтрі поки порожньо' : 'Перший крок ще попереду'}
       </p>
-      <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>
+      <p className="text-sm mb-6" style={{ color: '#666666' }}>
         {hasAny ? 'Спробуйте іншу вкладку' : 'Каспер чекає, коли ви почнете'}
       </p>
       {!hasAny && (
@@ -210,7 +210,7 @@ function Detail({
       className="flex flex-col"
     >
       <header className="flex items-center px-5 pt-12 pb-3 gap-3">
-        <button onClick={onBack} style={{ minWidth: 44, minHeight: 44, color: '#053E35' }}
+        <button onClick={onBack} aria-label="Назад" style={{ minWidth: 44, minHeight: 44, color: '#053E35' }}
           className="flex items-center justify-center text-2xl">‹</button>
         <h1 className="text-lg font-bold capitalize flex-1" style={{ color: '#053E35' }}>{date}</h1>
       </header>
@@ -219,7 +219,7 @@ function Detail({
         <div className="rounded-2xl p-4 text-center" style={{ background: '#FFF0E8' }}>
           <span className="text-4xl">{levelEmoji}</span>
           <p className="text-sm mt-2 font-semibold" style={{ color: '#053E35' }}>{levelText}</p>
-          <p className="text-xs mt-1" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-1" style={{ color: '#666666' }}>
             {profile?.name ?? 'Профіль'} · {activity.mode === 'together' ? 'Разом' : 'Соло'}
           </p>
         </div>
@@ -276,7 +276,7 @@ function Detail({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl p-4 border" style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-      <p className="text-xs uppercase font-semibold tracking-wider mb-2" style={{ color: '#9CA3AF' }}>{title}</p>
+      <p className="text-xs uppercase font-semibold tracking-wider mb-2" style={{ color: '#666666' }}>{title}</p>
       <div className="space-y-1.5">{children}</div>
     </div>
   )
@@ -285,7 +285,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3 text-sm">
-      <span style={{ color: '#9CA3AF' }}>{label}</span>
+      <span style={{ color: '#666666' }}>{label}</span>
       <span className="font-medium text-right" style={{ color: '#1F2A2E' }}>{value}</span>
     </div>
   )

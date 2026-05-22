@@ -48,7 +48,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
       {/* Header */}
       <header className="flex items-start justify-between px-5 pt-12 pb-3">
         <div>
-          <p className="text-xs uppercase tracking-wider" style={{ color: '#9CA3AF' }}>{today}</p>
+          <p className="text-xs uppercase tracking-wider" style={{ color: '#666666' }}>{today}</p>
           <h1 className="text-2xl font-bold mt-0.5" style={{ color: '#053E35' }}>
             Привіт, {profile.name}
           </h1>
@@ -58,6 +58,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
         </div>
         <button
           onClick={() => onNavigate('settings')}
+          aria-label="Налаштування"
           style={{ minWidth: 44, minHeight: 44, color: '#053E35' }}
           className="flex items-center justify-center"
         >
@@ -145,7 +146,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
       {stats?.avgMoodAfter != null && (
         <div className="px-5 mt-6">
           <div className="rounded-2xl p-4 border" style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-            <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#9CA3AF' }}>
+            <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#666666' }}>
               Самопочуття після
             </p>
             <p className="text-sm" style={{ color: '#053E35' }}>
@@ -177,10 +178,10 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
 function KPI({ label, value, suffix }: { label: string; value: number; suffix?: string }) {
   return (
     <div className="rounded-2xl p-4 border" style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-      <p className="text-xs uppercase tracking-wider" style={{ color: '#9CA3AF' }}>{label}</p>
+      <p className="text-xs uppercase tracking-wider" style={{ color: '#666666' }}>{label}</p>
       <p className="mt-1">
         <span className="text-2xl font-bold" style={{ color: '#053E35' }}>{value}</span>
-        {suffix && <span className="text-xs ml-1" style={{ color: '#9CA3AF' }}>{suffix}</span>}
+        {suffix && <span className="text-xs ml-1" style={{ color: '#666666' }}>{suffix}</span>}
       </p>
     </div>
   )

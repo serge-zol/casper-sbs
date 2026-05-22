@@ -2,7 +2,10 @@ export default function Splash({ onDone }: { onDone: () => void }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={onDone}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onDone() }}
       className="flex flex-col items-center justify-center px-8 text-center"
       style={{ minHeight: '100dvh', background: '#053E35', cursor: 'pointer' }}
     >

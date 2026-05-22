@@ -179,7 +179,7 @@ function Heading({ children }: { children: ReactNode }) {
 }
 
 function Sub({ children }: { children: ReactNode }) {
-  return <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>{children}</p>
+  return <p className="text-sm mb-6" style={{ color: '#666666' }}>{children}</p>
 }
 
 function Pill({
@@ -217,7 +217,7 @@ function OptionCard({
       }}
     >
       <div className="font-semibold" style={{ color: '#1F2A2E' }}>{title}</div>
-      {sub && <div className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{sub}</div>}
+      {sub && <div className="text-xs mt-0.5" style={{ color: '#666666' }}>{sub}</div>}
     </button>
   )
 }
@@ -259,6 +259,7 @@ function Step2({ draft, update }: StepProps) {
       <Sub>Щоб Каспер звертався правильно</Sub>
       <Label>Ім'я</Label>
       <input
+        aria-label="Ім'я"
         value={draft.name}
         onChange={e => update({ name: e.target.value })}
         placeholder="Введіть ім'я"
@@ -358,6 +359,9 @@ function Step4({ draft, update }: StepProps) {
           Зараз у процесі відновлення
         </span>
         <button
+          role="switch"
+          aria-checked={draft.inRecovery}
+          aria-label="Зараз у процесі відновлення"
           onClick={() => update({ inRecovery: !draft.inRecovery })}
           className="rounded-full"
           style={{
@@ -403,6 +407,7 @@ function Step4({ draft, update }: StepProps) {
           <div className="mt-3">
             <Label>Заборони лікаря</Label>
             <textarea
+              aria-label="Заборони лікаря"
               value={draft.prohibitions}
               onChange={e => update({ prohibitions: e.target.value })}
               placeholder="Наприклад: не бігти, пульс не вище 120"
@@ -487,8 +492,8 @@ function Step7() {
       </div>
       <div className="rounded-2xl border px-4 py-3.5 mb-3"
         style={{ background: '#fff', borderColor: '#FCE7D2' }}>
-        <div className="font-semibold" style={{ color: '#9CA3AF' }}>Додати партнера — пізніше</div>
-        <div className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+        <div className="font-semibold" style={{ color: '#666666' }}>Додати партнера — пізніше</div>
+        <div className="text-xs mt-0.5" style={{ color: '#666666' }}>
           Можна налаштувати в Налаштуваннях. Створіть другий профіль або поділіться посиланням.
         </div>
       </div>

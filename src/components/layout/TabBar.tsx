@@ -31,7 +31,7 @@ export default function TabBar({ active, onNavigate }: TabBarProps) {
             className="flex-1 flex flex-col items-center justify-center gap-0.5"
             style={{
               minHeight: 44,
-              color: isActive ? '#E85B16' : '#9CA3AF',
+              color: isActive ? '#E85B16' : '#666666',
             }}
           >
             <Icon size={22} strokeWidth={isActive ? 2.2 : 1.8} />

@@ -373,6 +373,7 @@ function Header({ phase, onBack }: { phase: Phase; onBack: () => void }) {
     <div className="flex items-center px-5 pt-12 pb-3 gap-3">
       <button
         onClick={onBack}
+        aria-label="Назад"
         style={{ minWidth: 44, minHeight: 44, color: '#053E35' }}
         className="flex items-center justify-center text-2xl"
       >
@@ -401,7 +402,7 @@ function Heading({ children }: { children: ReactNode }) {
   return <h2 className="text-xl font-bold mb-1" style={{ color: '#053E35' }}>{children}</h2>
 }
 function Sub({ children }: { children: ReactNode }) {
-  return <p className="text-sm mb-5" style={{ color: '#9CA3AF' }}>{children}</p>
+  return <p className="text-sm mb-5" style={{ color: '#666666' }}>{children}</p>
 }
 function Label({ children }: { children: ReactNode }) {
   return <label className="block text-sm font-semibold mb-2 mt-4" style={{ color: '#053E35' }}>{children}</label>
@@ -493,7 +494,7 @@ function PrePhase({
 
       <div className="flex items-baseline gap-2 mb-1">
         <span className="text-3xl font-bold" style={{ color: '#053E35' }}>{targetMinutes}</span>
-        <span className="text-sm" style={{ color: '#9CA3AF' }}>хв · ціль на сьогодні</span>
+        <span className="text-sm" style={{ color: '#666666' }}>хв · ціль на сьогодні</span>
       </div>
 
       <Heading>Як ви?</Heading>
@@ -534,6 +535,7 @@ function PrePhase({
       <YesNo value={pre.pain} onChange={v => upd({ pain: v })} />
       {pre.pain && (
         <textarea
+          aria-label="Деталі болю"
           value={pre.painDetails}
           onChange={e => upd({ painDetails: e.target.value })}
           placeholder="Де саме? Як давно?"
@@ -587,7 +589,7 @@ function SessionPhase({
 
   return (
     <div className="flex flex-col items-center pt-8">
-      <p className="text-sm mb-2" style={{ color: '#9CA3AF' }}>Ціль: {target} хв</p>
+      <p className="text-sm mb-2" style={{ color: '#666666' }}>Ціль: {target} хв</p>
 
       {/* Big timer */}
       <div className="text-7xl font-bold tabular-nums mb-2" style={{ color: '#053E35' }}>
@@ -603,6 +605,7 @@ function SessionPhase({
       {/* Pause/resume */}
       <button
         onClick={onToggle}
+        aria-label={running ? 'Пауза' : 'Відновити'}
         className="rounded-full flex items-center justify-center"
         style={{
           width: 72, height: 72,
@@ -649,6 +652,7 @@ function PostPhase({
 
       <Label>Тривалість (хв)</Label>
       <input
+        aria-label="Тривалість (хв)"
         type="number"
         inputMode="numeric"
         value={post.duration || ''}
@@ -661,6 +665,7 @@ function PostPhase({
         <div>
           <Label>Дистанція (км)</Label>
           <input
+            aria-label="Дистанція (км)"
             type="text" inputMode="decimal"
             value={post.distance} onChange={e => upd({ distance: e.target.value })}
             className="w-full rounded-2xl border px-4 outline-none"
@@ -670,6 +675,7 @@ function PostPhase({
         <div>
           <Label>Кроки</Label>
           <input
+            aria-label="Кроки"
             type="text" inputMode="numeric"
             value={post.steps} onChange={e => upd({ steps: e.target.value })}
             className="w-full rounded-2xl border px-4 outline-none"
@@ -714,6 +720,7 @@ function PostPhase({
       <YesNo value={post.discomfortAfter} onChange={v => upd({ discomfortAfter: v })} />
       {post.discomfortAfter && (
         <textarea
+          aria-label="Деталі дискомфорту"
           value={post.discomfortDetails}
           onChange={e => upd({ discomfortDetails: e.target.value })}
           placeholder={isOlena ? 'Чи був дискомфорт у зоні операції?' : 'Де саме?'}
@@ -747,6 +754,7 @@ function PostPhase({
 
       <Label>Коментар (опційно)</Label>
       <textarea
+        aria-label="Коментар"
         value={post.notesAfter}
         onChange={e => upd({ notesAfter: e.target.value })}
         placeholder="Що змінити наступного разу?"
@@ -805,7 +813,7 @@ function DonePhase({ post, pre }: { post: PostData; pre: PreData }) {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between py-1.5 text-sm">
-      <span style={{ color: '#9CA3AF' }}>{label}</span>
+      <span style={{ color: '#666666' }}>{label}</span>
       <span className="font-semibold" style={{ color: '#1F2A2E' }}>{value}</span>
     </div>
   )

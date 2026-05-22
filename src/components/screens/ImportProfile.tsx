@@ -45,7 +45,7 @@ export default function ImportProfile({ profile, onConfirm, onCancel }: Props) {
       <h1 className="text-2xl font-bold text-center mb-2" style={{ color: '#053E35' }}>
         Імпортувати профіль?
       </h1>
-      <p className="text-sm text-center mb-8" style={{ color: '#9CA3AF' }}>
+      <p className="text-sm text-center mb-8" style={{ color: '#666666' }}>
         Партнер хоче тренуватись разом
       </p>
 
@@ -56,7 +56,7 @@ export default function ImportProfile({ profile, onConfirm, onCancel }: Props) {
         <div className="font-semibold text-base mb-1" style={{ color: '#1F2A2E' }}>
           {profile.name}
         </div>
-        <div className="text-xs mb-1" style={{ color: '#9CA3AF' }}>
+        <div className="text-xs mb-1" style={{ color: '#666666' }}>
           {profile.medical.inRecovery ? '🟡 Режим відновлення' : '🟢 Звичайний режим'}
         </div>
         {profile.goals.length > 0 && (
