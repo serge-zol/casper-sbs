@@ -261,7 +261,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
         {phase === 'pre' && (
           <Button onClick={startSession}>
             {isOlena && pre.operationZoneDiscomfort ? 'Завершити — є дискомфорт' :
-             pre.pain ? 'Завершити — біль' : 'Поїхали'}
+             pre.pain ? 'Завершити — біль' : 'Рух'}
           </Button>
         )}
         {phase === 'session' && (
@@ -391,6 +391,16 @@ function PrePhase({
 
   return (
     <>
+      {isOlena && (
+        <div className="rounded-2xl px-4 py-3 mb-4" style={{ background: '#CDE1D5' }}>
+          <p className="flex items-center gap-2 text-sm font-semibold mb-2" style={{ color: '#053E35' }}>
+            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={18} style={{ width: 18, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+            Чи є дискомфорт у зоні операції?
+          </p>
+          <YesNo value={pre.operationZoneDiscomfort} onChange={v => upd({ operationZoneDiscomfort: v })} />
+        </div>
+      )}
+
       {isRest && (
         <div className="rounded-2xl px-4 py-3 mb-4" style={{ background: '#FFE5E0', borderLeft: '4px solid #E85B16' }}>
           <p className="text-sm font-semibold" style={{ color: '#053E35' }}>Каспер радить відпочити</p>
@@ -405,18 +415,6 @@ function PrePhase({
 
       <Heading>Як ви?</Heading>
       <Sub>Каспер скоригує план під ваш стан</Sub>
-
-      {isOlena && (
-        <>
-          <div className="rounded-2xl px-4 py-3 mb-4" style={{ background: '#CDE1D5' }}>
-            <p className="flex items-center gap-2 text-sm font-semibold mb-2" style={{ color: '#053E35' }}>
-              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={18} style={{ width: 18, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
-              Чи є дискомфорт у зоні операції?
-            </p>
-            <YesNo value={pre.operationZoneDiscomfort} onChange={v => upd({ operationZoneDiscomfort: v })} />
-          </div>
-        </>
-      )}
 
       <Label>Як спалось? (1 — погано, 5 — чудово)</Label>
       <Scale max={5} value={pre.sleep} onChange={v => upd({ sleep: v as PreData['sleep'] })} />
@@ -711,7 +709,11 @@ function DonePhase({ post, pre }: { post: PostData; pre: PreData }) {
       </div>
 
       <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
-        <p className="text-sm" style={{ color: '#053E35' }}>🐈 {pickPhrase(level)}</p>
+        {/* CASPER_ICON: завжди використовувати cat-paw.png, не emoji */}
+        <p className="flex items-center gap-1.5 text-sm" style={{ color: '#053E35' }}>
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+          {pickPhrase(level)}
+        </p>
       </div>
     </div>
   )
