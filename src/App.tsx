@@ -75,26 +75,31 @@ export default function App() {
 
   return (
     <SafeAreaWrapper>
-      <ScreenRouter
-        screen={screen}
-        importedProfile={importedProfile}
-        greetingProfile={greetingProfile}
-        onNavigate={setScreen}
-        onSplashDone={handleSplashDone}
-        onImportDone={() => {
-          setImportedProfile(null)
-          setScreen('profile-select')
-        }}
-      />
+      <main>
+        <ScreenRouter
+          screen={screen}
+          importedProfile={importedProfile}
+          greetingProfile={greetingProfile}
+          onNavigate={setScreen}
+          onSplashDone={handleSplashDone}
+          onImportDone={() => {
+            setImportedProfile(null)
+            setScreen('profile-select')
+          }}
+        />
+      </main>
       {TAB_SCREENS.includes(screen) && (
         <TabBar active={screen} onNavigate={setScreen} />
       )}
-      <div style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
-        fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'right',
-        fontStyle: 'italic', padding: '2px 0', paddingRight: 8,
-        pointerEvents: 'none',
-      }}>
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
+          fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'right',
+          fontStyle: 'italic', padding: '2px 0', paddingRight: 8,
+          pointerEvents: 'none',
+        }}
+      >
         {__BUILD_LABEL__}
       </div>
     </SafeAreaWrapper>
@@ -178,7 +183,7 @@ function PlaceholderScreen({
     >
       <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} className="mb-4" style={{ width: 56, height: 'auto' }} />
       <p className="text-xl font-semibold mb-1" style={{ color: '#053E35' }}>Каспер</p>
-      <p className="text-sm text-gray-400 mb-8">{screen}</p>
+      <p className="text-sm mb-8" style={{ color: '#666666' }}>{screen}</p>
       <div className="flex flex-wrap gap-2 justify-center">
         {ALL.map(s => (
           <button

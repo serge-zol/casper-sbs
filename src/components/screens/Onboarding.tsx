@@ -133,7 +133,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
             />
           ))}
         </div>
-        <div style={{ minWidth: 44 }} className="text-right text-xs text-gray-400">{phase}/7</div>
+        <div style={{ minWidth: 44, color: '#666666' }} className="text-right text-xs">{phase}/7</div>
       </div>
 
       <div className="flex-1 px-6 pt-6 pb-4 overflow-y-auto">

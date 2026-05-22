@@ -93,7 +93,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
             style={{ background: '#FFF0E8', borderColor: '#E85B16', minHeight: 72 }}
           >
             <div className="font-semibold text-base" style={{ color: '#E85B16' }}>👣 Разом</div>
-            <div className="text-xs mt-1" style={{ color: '#F39A2F' }}>Спільна прогулянка для обох</div>
+            <div className="text-xs mt-1" style={{ color: '#666666' }}>Спільна прогулянка для обох</div>
           </button>
         )}
 
