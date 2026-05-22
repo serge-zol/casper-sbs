@@ -49,9 +49,32 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
   const [sharingProfile, setSharingProfile] = useState<Profile | null>(null)
 
   useEffect(() => {
-    playCallPurr()
-    const id = setInterval(playCallPurr, 60_000)
-    return () => clearInterval(id)
+    let intervalId: ReturnType<typeof setInterval> | null = null
+
+    function onUnlocked() {
+      playCallPurr()
+      intervalId = setInterval(playCallPurr, 60_000)
+    }
+
+    let probe: AudioContext
+    try {
+      probe = new AudioContext()
+    } catch {
+      return
+    }
+
+    if (probe.state === 'running') {
+      probe.close()
+      onUnlocked()
+    } else {
+      probe.close()
+      document.addEventListener('click', onUnlocked, { once: true })
+    }
+
+    return () => {
+      document.removeEventListener('click', onUnlocked)
+      if (intervalId !== null) clearInterval(intervalId)
+    }
   }, [])
 
   function selectProfile(profileId: number, mode: 'solo' | 'together') {
