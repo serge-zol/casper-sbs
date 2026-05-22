@@ -8,6 +8,51 @@ import { useRecommendation } from '@/hooks/useRecommendation'
 import Button from '@/components/ui/Button'
 import { pickPhrase } from '@/logic/casperPhrases'
 
+// Синтез муркотіння через Web Audio API — 28Hz sawtooth + 25Hz square gate
+function playPurr(): () => void {
+  try {
+    const ctx = new AudioContext()
+
+    const carrier = ctx.createOscillator()
+    carrier.type = 'sawtooth'
+    carrier.frequency.value = 28  // глоточний румбл ~25-30Hz
+
+    const gateGain = ctx.createGain()
+    gateGain.gain.value = 0       // LFO керує відкриттям
+
+    const masterGain = ctx.createGain()
+    masterGain.gain.value = 0.13
+
+    const lfo = ctx.createOscillator()
+    lfo.type = 'square'
+    lfo.frequency.value = 25      // 25 пульсів/с — класика муркотіння
+
+    // WaveShaper: перетворює LFO -1..1 → 0..1 (уніполярний gate)
+    const shaper = ctx.createWaveShaper()
+    const n = 256
+    const curve = new Float32Array(n)
+    for (let i = 0; i < n; i++) curve[i] = i / (n - 1)
+    shaper.curve = curve
+
+    lfo.connect(shaper)
+    shaper.connect(gateGain.gain)
+    carrier.connect(gateGain)
+    gateGain.connect(masterGain)
+    masterGain.connect(ctx.destination)
+
+    carrier.start()
+    lfo.start()
+
+    return () => {
+      try { carrier.stop() } catch { /* already stopped */ }
+      try { lfo.stop() } catch { /* already stopped */ }
+      ctx.close()
+    }
+  } catch {
+    return () => {}
+  }
+}
+
 type Phase = 'pre' | 'session' | 'post' | 'done'
 
 interface PreData {
@@ -71,6 +116,17 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
   const [running, setRunning] = useState(false)
   const startedAtRef = useRef<number | null>(null)
   const accumRef = useRef(0)
+  const userGestureRef = useRef(false)
+  const purrStopRef = useRef<(() => void) | null>(null)
+
+  useEffect(() => {
+    if (saving && userGestureRef.current) {
+      purrStopRef.current = playPurr()
+    } else if (!saving && purrStopRef.current) {
+      purrStopRef.current()
+      purrStopRef.current = null
+    }
+  }, [saving])
 
   useEffect(() => {
     if (!running) return
@@ -107,6 +163,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
 
   // ───────── Phase: PRE ─────────
   async function startSession() {
+    userGestureRef.current = true
     if (!profile?.id) return
     // Якщо у Олени дискомфорт зони — миттєвий rest
     if (isOlena && pre.operationZoneDiscomfort) {
@@ -168,6 +225,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
 
   // ───────── Phase: SESSION → POST ─────────
   function endSession() {
+    userGestureRef.current = true
     pauseTimer()
     const minutes = Math.max(1, Math.round(elapsed / 60))
     setPost({ ...DEFAULT_POST, duration: minutes })
@@ -176,6 +234,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
 
   // ───────── Phase: POST → DONE ─────────
   async function savePost() {
+    userGestureRef.current = true
     if (saving || !activityId || !profile?.id) return
     const profileId = profile.id
     setSaving(true)
@@ -229,6 +288,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
       }}
       className="flex flex-col"
     >
+      <style>{`@keyframes pawBlink{0%,100%{opacity:.2}50%{opacity:1}}`}</style>
       <Header phase={phase} onBack={() => onNavigate('home')} />
 
       <div className="flex-1 px-5 pt-2 pb-4 overflow-y-auto">
@@ -269,7 +329,24 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
         )}
         {phase === 'post' && (
           <Button onClick={savePost} disabled={saving}>
-            {saving ? 'Зберігаємо…' : 'Зберегти'}
+            {saving ? (
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                {([0, 0.3, 0.6] as const).map((delay, i) => (
+                  <img
+                    key={i}
+                    src={`${import.meta.env.BASE_URL}cat-paw.png`}
+                    alt=""
+                    width={24}
+                    style={{
+                      width: 24, height: 'auto',
+                      filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)',
+                      animation: 'pawBlink 0.9s ease-in-out infinite',
+                      animationDelay: `${delay}s`,
+                    }}
+                  />
+                ))}
+              </span>
+            ) : 'Зберегти'}
           </Button>
         )}
         {phase === 'done' && (
