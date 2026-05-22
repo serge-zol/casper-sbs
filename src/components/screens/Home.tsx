@@ -163,8 +163,8 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
       {rec && (
         <div className="px-5 mt-6">
           <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
-            <p className="flex items-start gap-1.5 text-sm leading-relaxed" style={{ color: '#053E35', whiteSpace: 'pre-line' }}>
-              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, marginTop: 2, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+            <p className="flex gap-2 text-sm leading-relaxed" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
+              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
               {rec.casperPhrase}
             </p>
           </div>

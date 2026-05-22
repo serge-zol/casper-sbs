@@ -612,8 +612,8 @@ function SessionPhase({
       {/* Tip */}
       <div className="rounded-2xl px-4 py-3 mt-8 max-w-sm w-full"
         style={{ background: isOlena ? '#CDE1D5' : '#FFF0E8' }}>
-        <p className="flex items-start gap-1.5 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line' }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, marginTop: 2, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+        <p className="flex gap-2 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
           {isOlena
             ? 'Комфортний темп.\nБез прискорення.\nФокус — рівне дихання.'
             : 'Ритм важливіший за швидкість.\nКаспер поруч.'}
@@ -790,8 +790,8 @@ function DonePhase({ post, pre }: { post: PostData; pre: PreData }) {
 
       <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
         {/* CASPER_ICON: завжди використовувати cat-paw.png, не emoji */}
-        <p className="flex items-start gap-1.5 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line' }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+        <p className="flex gap-2 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
           {pickPhrase(level)}
         </p>
       </div>
