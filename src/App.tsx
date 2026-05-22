@@ -1,6 +1,4 @@
 import { useState, lazy, Suspense, useEffect, useCallback } from 'react'
-
-declare const __BUILD_LABEL__: string
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Splash from '@/components/screens/Splash'
@@ -91,17 +89,7 @@ export default function App() {
       {TAB_SCREENS.includes(screen) && (
         <TabBar active={screen} onNavigate={setScreen} />
       )}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
-          fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'right',
-          fontStyle: 'italic', padding: '2px 0', paddingRight: 8,
-          pointerEvents: 'none',
-        }}
-      >
-        {__BUILD_LABEL__}
-      </div>
+
     </SafeAreaWrapper>
   )
 }

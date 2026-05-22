@@ -112,7 +112,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
 
         <button
           onClick={next}
-          className="w-full max-w-xs rounded-2xl text-xl font-semibold"
+          className="w-full max-w-xs rounded-2xl text-xl font-bold"
           style={{ background: '#E85B16', color: '#fff', minHeight: 56, padding: '14px 24px' }}
         >
           Почати
