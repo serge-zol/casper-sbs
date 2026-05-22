@@ -22,12 +22,14 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
   const today = new Date().toLocaleDateString('uk-UA', {
     weekday: 'long', day: 'numeric', month: 'long',
   })
-  const isRest = rec?.paceType === 'rest'
-  const cautionBg = rec?.cautionLevel === 'red'
-    ? '#FFE5E0'
+  const isRest = rec?.cautionLevel === 'red' || rec?.paceType === 'rest'
+  const cautionBg = rec?.cautionLevel === 'green'
+    ? '#CDE1D5'
     : rec?.cautionLevel === 'yellow'
       ? '#FFF0D6'
-      : '#FFF0E8'
+      : rec?.cautionLevel === 'red'
+        ? '#FFE5E0'
+        : '#FFF0E8'
   const cautionBorder = rec?.cautionLevel === 'red'
     ? '#E85B16'
     : rec?.cautionLevel === 'yellow'
@@ -146,7 +148,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
         <div className="px-5 mt-6">
           <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
             <p className="text-sm leading-relaxed" style={{ color: '#053E35' }}>
-              🐈 {rec.casperPhrase}
+              🐾 {rec.casperPhrase}
             </p>
           </div>
         </div>
