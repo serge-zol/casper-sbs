@@ -8,43 +8,46 @@ import { useRecommendation } from '@/hooks/useRecommendation'
 import Button from '@/components/ui/Button'
 import { pickPhrase } from '@/logic/casperPhrases'
 
-// М'яке котяче муркотіння: triangle ~27Hz + lowpass 250Hz + sine LFO 5Hz
+// Котяче муркотіння: sine 150Hz, LFO 25Hz модулює гучність
 function playPurr(): () => void {
   try {
     const ctx = new AudioContext()
 
-    const carrier = ctx.createOscillator()
-    carrier.type = 'triangle'
-    carrier.frequency.value = 27
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.value = 150
+
+    const lfo = ctx.createOscillator()
+    lfo.type = 'sine'
+    lfo.frequency.value = 25
+
+    const lfoGain = ctx.createGain()
+    lfoGain.gain.value = 0.5
+
+    const carrierGain = ctx.createGain()
+    carrierGain.gain.value = 0.5
 
     const filter = ctx.createBiquadFilter()
     filter.type = 'lowpass'
-    filter.frequency.value = 250
-    filter.Q.value = 1
+    filter.frequency.value = 600
+    filter.Q.value = 0.8
 
-    // Envelope gain: fade-in 0.3s
-    const envGain = ctx.createGain()
-    envGain.gain.setValueAtTime(0, ctx.currentTime)
-    envGain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.3)
+    const master = ctx.createGain()
+    master.gain.setValueAtTime(0, ctx.currentTime)
+    master.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.3)
 
-    // LFO: повільне "вдих-видих" 5Hz, глибина ±0.03
-    const lfo = ctx.createOscillator()
-    lfo.type = 'sine'
-    lfo.frequency.value = 5
-    const lfoDepth = ctx.createGain()
-    lfoDepth.gain.value = 0.03
+    lfo.connect(lfoGain)
+    lfoGain.connect(carrierGain.gain)
+    osc.connect(carrierGain)
+    carrierGain.connect(filter)
+    filter.connect(master)
+    master.connect(ctx.destination)
 
-    carrier.connect(filter)
-    filter.connect(envGain)
-    envGain.connect(ctx.destination)
-    lfo.connect(lfoDepth)
-    lfoDepth.connect(envGain.gain)
-
-    carrier.start()
+    osc.start()
     lfo.start()
 
     return () => {
-      try { carrier.stop() } catch { /* already stopped */ }
+      try { osc.stop() } catch { /* already stopped */ }
       try { lfo.stop() } catch { /* already stopped */ }
       ctx.close()
     }

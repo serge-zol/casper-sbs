@@ -10,40 +10,47 @@ function playCallPurr() {
     const ctx = new AudioContext()
 
     const play = () => {
-      const carrier = ctx.createOscillator()
-      carrier.type = 'triangle'
-      carrier.frequency.setValueAtTime(27, ctx.currentTime)
-      carrier.frequency.linearRampToValueAtTime(34, ctx.currentTime + 1.5)
+      const t = ctx.currentTime
 
-      const filter = ctx.createBiquadFilter()
-      filter.type = 'lowpass'
-      filter.frequency.value = 250
-      filter.Q.value = 1
-
-      const envGain = ctx.createGain()
-      envGain.gain.setValueAtTime(0, ctx.currentTime)
-      envGain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.1)
-      envGain.gain.setValueAtTime(0.10, ctx.currentTime + 1.4)
-      envGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.8)
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(150, t)
+      osc.frequency.linearRampToValueAtTime(200, t + 0.8)  // glide вгору — кіт питає "хто?"
 
       const lfo = ctx.createOscillator()
       lfo.type = 'sine'
-      lfo.frequency.value = 5
-      const lfoDepth = ctx.createGain()
-      lfoDepth.gain.value = 0.03
+      lfo.frequency.value = 25
 
-      carrier.connect(filter)
-      filter.connect(envGain)
-      envGain.connect(ctx.destination)
-      lfo.connect(lfoDepth)
-      lfoDepth.connect(envGain.gain)
+      const lfoGain = ctx.createGain()
+      lfoGain.gain.value = 0.5
 
-      carrier.start(ctx.currentTime)
-      lfo.start(ctx.currentTime)
-      carrier.stop(ctx.currentTime + 1.8)
-      lfo.stop(ctx.currentTime + 1.8)
+      const carrierGain = ctx.createGain()
+      carrierGain.gain.value = 0.5
 
-      carrier.onended = () => ctx.close()
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'lowpass'
+      filter.frequency.value = 600
+      filter.Q.value = 0.8
+
+      const master = ctx.createGain()
+      master.gain.setValueAtTime(0, t)
+      master.gain.linearRampToValueAtTime(0.10, t + 0.1)
+      master.gain.setValueAtTime(0.10, t + 1.4)
+      master.gain.linearRampToValueAtTime(0, t + 1.8)
+
+      lfo.connect(lfoGain)
+      lfoGain.connect(carrierGain.gain)
+      osc.connect(carrierGain)
+      carrierGain.connect(filter)
+      filter.connect(master)
+      master.connect(ctx.destination)
+
+      osc.start(t)
+      lfo.start(t)
+      osc.stop(t + 1.8)
+      lfo.stop(t + 1.8)
+
+      osc.onended = () => ctx.close()
     }
 
     if (ctx.state === 'suspended') {
