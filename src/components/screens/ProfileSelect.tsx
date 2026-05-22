@@ -45,8 +45,10 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
   return (
     <>
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col px-6 pt-16 pb-10">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={40} className="mb-2" style={{ width: 40, height: 'auto' }} />
-        <h1 className="text-2xl font-bold mb-1" style={{ color: '#053E35' }}>Хто тренується?</h1>
+        <div className="flex items-center mb-1" style={{ gap: 12 }}>
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto', flexShrink: 0 }} />
+          <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Хто тренується?</h1>
+        </div>
         <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>{today}</p>
 
         {profiles.map(p => (

@@ -112,11 +112,11 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
             />
           </Field>
           <Field label="Цілі">
-            <div className="flex flex-wrap gap-2">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {GOALS.map(g => {
                 const active = profile.goals.includes(g)
                 return (
-                  <Pill key={g} active={active} onClick={() => patch({
+                  <Pill key={g} active={active} style={{ flex: '1 1 45%' }} onClick={() => patch({
                     goals: active ? profile.goals.filter(x => x !== g) : [...profile.goals, g],
                   })}>{g}</Pill>
                 )
@@ -223,7 +223,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
           />
           <p className="text-xs" style={{ color: '#9CA3AF' }}>За замовчуванням: вимкнено</p>
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid #FCE7D2' }}>
-            <Row label="Версія" value={__BUILD_LABEL__} />
+            <Row label="Версія" value={__BUILD_LABEL__.split(' ').slice(0, 5).join(' ')} italic />
             <Row label="Мова" value="Українська" />
             <Row label="Сховище" value="IndexedDB (локально)" />
           </div>
@@ -334,11 +334,11 @@ function ToggleRow({
   )
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function Row({ label, value, italic }: { label: string; value: string; italic?: boolean }) {
   return (
     <div className="flex justify-between gap-3 text-sm py-1">
       <span style={{ color: '#9CA3AF' }}>{label}</span>
-      <span className="font-medium" style={{ color: '#1F2A2E' }}>{value}</span>
+      <span className="font-medium" style={{ color: '#1F2A2E', fontStyle: italic ? 'italic' : 'normal' }}>{value}</span>
     </div>
   )
 }
