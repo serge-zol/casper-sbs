@@ -3,28 +3,23 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import type { Screen } from '@/App'
 import { db } from '@/db/db'
 import type { Activity, CheckIn, Profile } from '@/db/types'
+import { useActiveProfile } from '@/hooks/useActiveProfile'
 
-type Filter = 'all' | 'serge' | 'olena' | 'together'
-
-const FILTER_KEY = 'journalFilter'
+type Tab = 'personal' | 'together'
+const TAB_KEY = 'journalTab'
 
 export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => void }) {
-  const [filter, setFilter] = useState<Filter>(
-    (localStorage.getItem(FILTER_KEY) as Filter) || 'all',
-  )
+  const { profile: currentProfile } = useActiveProfile()
+  const [tab, setTab] = useState<Tab>((localStorage.getItem(TAB_KEY) as Tab) || 'personal')
   const [selectedId, setSelectedId] = useState<number | undefined>()
 
   const activities = useLiveQuery(() => db.activities.orderBy('date').reverse().toArray(), [])
   const checkins = useLiveQuery(() => db.checkins.toArray(), [])
-  const profiles = useLiveQuery(() => db.profiles.toArray(), [])
 
-  function setF(f: Filter) {
-    setFilter(f)
-    localStorage.setItem(FILTER_KEY, f)
+  function setT(t: Tab) {
+    setTab(t)
+    localStorage.setItem(TAB_KEY, t)
   }
-
-  const profileMap = new Map<number, Profile>()
-  for (const p of profiles ?? []) if (p.id) profileMap.set(p.id, p)
 
   const beforeMap = new Map<number, CheckIn>()
   const afterMap = new Map<number, CheckIn>()
@@ -34,7 +29,6 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
     else afterMap.set(c.activityId, c)
   }
 
-  // Деталі
   if (selectedId !== undefined) {
     const activity = activities?.find(a => a.id === selectedId)
     if (!activity) {
@@ -44,7 +38,7 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
     return (
       <Detail
         activity={activity}
-        profile={profileMap.get(activity.profileId)}
+        profile={currentProfile}
         before={activity.id ? beforeMap.get(activity.id) : undefined}
         after={activity.id ? afterMap.get(activity.id) : undefined}
         onBack={() => setSelectedId(undefined)}
@@ -52,12 +46,9 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
     )
   }
 
-  // Список
-  const filtered = (activities ?? []).filter(a => {
-    if (filter === 'all') return true
-    if (filter === 'together') return a.mode === 'together'
-    return profileMap.get(a.profileId)?.mode === filter
-  })
+  const filtered = (activities ?? []).filter(a =>
+    tab === 'together' ? a.mode === 'together' : a.profileId === currentProfile?.id,
+  )
 
   const loading = activities === undefined
 
@@ -74,23 +65,20 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
         <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Журнал</h1>
       </header>
 
-      {/* Filter tabs */}
-      <div className="px-5 pb-3 flex gap-2 overflow-x-auto">
+      <div className="px-5 pb-3 flex gap-2">
         {([
-          ['all', 'Всі'],
-          ['serge', 'Серж'],
-          ['olena', 'Олена'],
-          ['together', 'Разом'],
-        ] as const).map(([v, l]) => (
+          ['personal', currentProfile?.name ?? 'Мої'] as const,
+          ['together', 'Разом'] as const,
+        ]).map(([v, l]) => (
           <button
             key={v}
-            onClick={() => setF(v)}
-            className="rounded-full text-sm border px-4 whitespace-nowrap"
+            onClick={() => setT(v)}
+            className="flex-1 rounded-full text-sm border"
             style={{
               minHeight: 36, padding: '6px 16px',
-              background: filter === v ? '#E85B16' : '#fff',
-              color: filter === v ? '#fff' : '#1F2A2E',
-              borderColor: filter === v ? '#E85B16' : '#FCE7D2',
+              background: tab === v ? '#E85B16' : '#fff',
+              color: tab === v ? '#fff' : '#1F2A2E',
+              borderColor: tab === v ? '#E85B16' : '#FCE7D2',
             }}
           >
             {l}
@@ -111,7 +99,7 @@ export default function Journal({ onNavigate }: { onNavigate: (s: Screen) => voi
               <Card
                 key={a.id}
                 activity={a}
-                profile={profileMap.get(a.profileId)}
+                profile={currentProfile}
                 after={a.id ? afterMap.get(a.id) : undefined}
                 onClick={() => setSelectedId(a.id)}
               />
@@ -177,7 +165,7 @@ function EmptyState({ onStart, hasAny }: { onStart: () => void; hasAny: boolean 
         {hasAny ? 'У цьому фільтрі поки порожньо' : 'Перший крок ще попереду'}
       </p>
       <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>
-        {hasAny ? 'Спробуйте інший фільтр' : 'Каспер чекає, коли ви почнете'}
+        {hasAny ? 'Спробуйте іншу вкладку' : 'Каспер чекає, коли ви почнете'}
       </p>
       {!hasAny && (
         <button
@@ -228,7 +216,6 @@ function Detail({
       </header>
 
       <div className="px-5 space-y-3">
-        {/* Conclusion banner */}
         <div className="rounded-2xl p-4 text-center" style={{ background: '#FFF0E8' }}>
           <span className="text-4xl">{levelEmoji}</span>
           <p className="text-sm mt-2 font-semibold" style={{ color: '#053E35' }}>{levelText}</p>
@@ -237,7 +224,6 @@ function Detail({
           </p>
         </div>
 
-        {/* Stats */}
         <Section title="Сесія">
           <Row label="Тривалість" value={`${activity.duration} хв`} />
           {activity.distance && <Row label="Дистанція" value={`${activity.distance} км`} />}
@@ -246,7 +232,6 @@ function Detail({
           {activity.notes && <Row label="Нотатка" value={activity.notes} />}
         </Section>
 
-        {/* Pre-check */}
         {before && (
           <Section title="До тренування">
             {before.sleep != null && <Row label="Сон" value={`${before.sleep}/5`} />}
@@ -266,7 +251,6 @@ function Detail({
           </Section>
         )}
 
-        {/* Post-check */}
         {after && (
           <Section title="Після тренування">
             {after.difficulty != null && <Row label="Складність" value={`${after.difficulty}/10`} />}

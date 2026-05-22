@@ -5,23 +5,31 @@ import type { Screen } from '@/App'
 import { db } from '@/db/db'
 import type { Activity, CheckIn, Profile } from '@/db/types'
 import { calcStreak } from '@/logic/streak'
+import { useActiveProfile } from '@/hooks/useActiveProfile'
 
-type Tab = 'serge' | 'olena' | 'together'
+type Tab = 'personal' | 'together'
 const TAB_KEY = 'statsTab'
 
+function weekTarget(d: Profile['schedule']['daysPerWeek']): number {
+  if (d === '1-2') return 2
+  if (d === '3-4') return 4
+  if (d === '5+') return 5
+  return 4 // flexible
+}
+
 export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s: Screen) => void }) {
-  const [tab, setTab] = useState<Tab>((localStorage.getItem(TAB_KEY) as Tab) || 'serge')
+  const { profile: currentProfile } = useActiveProfile()
+  const [tab, setTab] = useState<Tab>((localStorage.getItem(TAB_KEY) as Tab) || 'personal')
 
   const activities = useLiveQuery(() => db.activities.toArray(), [])
   const checkins = useLiveQuery(() => db.checkins.toArray(), [])
-  const profiles = useLiveQuery(() => db.profiles.toArray(), [])
 
   function setT(t: Tab) {
     setTab(t)
     localStorage.setItem(TAB_KEY, t)
   }
 
-  const loading = activities === undefined || checkins === undefined || profiles === undefined
+  const loading = activities === undefined || checkins === undefined || currentProfile === undefined
 
   return (
     <div
@@ -37,7 +45,10 @@ export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s
       </header>
 
       <div className="px-5 pb-3 flex gap-2">
-        {([['serge', 'Серж'], ['olena', 'Олена'], ['together', 'Разом']] as const).map(([v, l]) => (
+        {([
+          ['personal', currentProfile?.name ?? 'Мої'] as const,
+          ['together', 'Разом'] as const,
+        ]).map(([v, l]) => (
           <button
             key={v}
             onClick={() => setT(v)}
@@ -60,13 +71,12 @@ export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s
             <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
           </div>
         ) : tab === 'together' ? (
-          <TogetherView activities={activities} />
+          <TogetherView activities={activities!} />
         ) : (
           <PersonalView
-            mode={tab}
-            activities={activities}
-            checkins={checkins}
-            profile={profiles.find(p => p.mode === tab)}
+            profile={currentProfile!}
+            activities={activities!}
+            checkins={checkins!}
           />
         )}
       </div>
@@ -77,21 +87,12 @@ export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s
 // ───────── Personal view ─────────
 
 function PersonalView({
-  mode, activities, checkins, profile,
+  profile, activities, checkins,
 }: {
-  mode: 'serge' | 'olena'
+  profile: Profile
   activities: Activity[]
   checkins: CheckIn[]
-  profile?: Profile
 }) {
-  if (!profile) {
-    return (
-      <div className="text-center pt-12">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} className="block mb-3" style={{ width: 56, height: 'auto' }} />
-        <p className="text-base" style={{ color: '#053E35' }}>Профіль ще не створено</p>
-      </div>
-    )
-  }
   const my = activities.filter(a => a.profileId === profile.id)
   const myAfter = checkins.filter(c => c.profileId === profile.id && c.type === 'after')
 
@@ -106,6 +107,11 @@ function PersonalView({
   for (const c of weekAfter) if (c.difficulty != null) diffs.push(c.difficulty)
   const avgDiff = diffs.length ? diffs.reduce((s, d) => s + d, 0) / diffs.length : null
 
+  const target = weekTarget(profile.schedule.daysPerWeek)
+  const targetLabel = profile.schedule.daysPerWeek === 'flexible'
+    ? 'гнучко'
+    : profile.schedule.daysPerWeek
+
   // 7-day chart data
   const days = Array.from({ length: 7 }, (_, i) => dayBack(6 - i))
   const chartData = days.map(d => {
@@ -113,7 +119,7 @@ function PersonalView({
     return { d: d.slice(5), mins: sumMin }
   })
 
-  // Mood trend (after-checkins by date)
+  // Mood trend
   const moodData = days.map(d => {
     const day = weekAfter.filter(c => c.date.slice(0, 10) === d)
     if (day.length === 0) return { d: d.slice(5), m: null }
@@ -124,13 +130,26 @@ function PersonalView({
     return { d: d.slice(5), m: sum / day.length }
   })
 
-  // Discomfort markers (Олена)
-  const discomfortDays = mode === 'olena'
+  const discomfortDays = profile.medical.inRecovery
     ? weekAfter.filter(c => c.discomfortAfter).length
     : 0
 
   return (
     <div className="space-y-4 pb-4">
+      {/* Прогрес — вгорі */}
+      <Card title="Прогрес тижня">
+        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>
+          Ціль: {profile.schedule.targetMinutes} хв × {targetLabel}
+        </p>
+        <div className="h-2 rounded-full mb-1" style={{ background: '#FCE7D2' }}>
+          <div className="h-full rounded-full" style={{
+            width: `${Math.min(100, (sessions / target) * 100)}%`,
+            background: '#E85B16',
+          }} />
+        </div>
+        <p className="text-xs" style={{ color: '#1F2A2E' }}>{sessions} із {target} рекомендованих</p>
+      </Card>
+
       <div className="grid grid-cols-2 gap-3">
         <KPI label="Хвилин" value={totalMinutes} />
         <KPI label="Прогулянок" value={sessions} />
@@ -166,26 +185,13 @@ function PersonalView({
         </Card>
       )}
 
-      {mode === 'olena' && (
+      {profile.medical.inRecovery && (
         <Card title="Маркери відновлення">
           <Row label="Днів з дискомфортом" value={String(discomfortDays)} />
-          <Row label="Стан зони операції" value={profile.medical.inRecovery ? 'процес' : 'нема даних'} />
+          <Row label="Стан зони операції" value="процес" />
           <Row label="Активних сесій тижня" value={String(sessions)} />
         </Card>
       )}
-
-      <Card title="Прогрес">
-        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>
-          Ціль: {profile.schedule.targetMinutes} хв × {profile.schedule.daysPerWeek === 'flexible' ? 'гнучко' : profile.schedule.daysPerWeek}
-        </p>
-        <div className="h-2 rounded-full mb-1" style={{ background: '#FCE7D2' }}>
-          <div className="h-full rounded-full" style={{
-            width: `${Math.min(100, (sessions / 5) * 100)}%`,
-            background: '#E85B16',
-          }} />
-        </div>
-        <p className="text-xs" style={{ color: '#1F2A2E' }}>{sessions} із 5 рекомендованих</p>
-      </Card>
     </div>
   )
 }
@@ -201,7 +207,6 @@ function TogetherView({ activities }: { activities: Activity[] }) {
   const totalSessions = together.length
   const streakAll = calcStreak(together.map(a => ({ date: a.date })))
 
-  // Regularity: weeks with at least 1 together activity in past 8 weeks
   const weeksMap = new Map<string, number>()
   for (const a of together) {
     const d = new Date(a.date)
