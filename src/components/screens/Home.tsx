@@ -71,10 +71,20 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
           className="rounded-2xl p-5 border"
           style={{ background: cautionBg, borderColor: cautionBorder }}
         >
-          <p className="text-xs uppercase font-semibold tracking-wider mb-2"
-            style={{ color: cautionBorder }}>
-            Сьогодні
-          </p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs uppercase font-semibold tracking-wider"
+              style={{ color: cautionBorder }}>
+              Сьогодні
+            </p>
+            {rec && (
+              <span style={{
+                fontSize: 11, fontWeight: 600,
+                color: rec.cautionLevel === 'green' ? '#2D7A4F' : rec.cautionLevel === 'yellow' ? '#E85B16' : '#C0392B',
+              }}>
+                {rec.cautionLevel === 'green' ? '✓ Все ок' : rec.cautionLevel === 'yellow' ? '! Обережно' : '⊘ День відновлення'}
+              </span>
+            )}
+          </div>
           {rec ? (
             <>
               <div className="flex items-baseline gap-2 mb-2">
@@ -88,6 +98,12 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
               <p className="text-sm leading-relaxed mb-1" style={{ color: '#1F2A2E' }}>
                 {rec.reason}
               </p>
+              {rec.cautionLevel === 'red' && (
+                <p className="flex items-center gap-1.5 text-xs mt-2" style={{ color: '#053E35' }}>
+                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+                  Сьогодні — день відновлення. Дай тілу відпочити, Каспер порадить легку прогулянку завтра 🐾
+                </p>
+              )}
               {rec.safetyNotes && (
                 <p className="flex items-center gap-1.5 text-xs mt-2" style={{ color: '#053E35' }}>
                   <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
@@ -147,8 +163,9 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
       {rec && (
         <div className="px-5 mt-6">
           <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
-            <p className="text-sm leading-relaxed" style={{ color: '#053E35' }}>
-              🐾 {rec.casperPhrase}
+            <p className="flex items-center gap-1.5 text-sm leading-relaxed" style={{ color: '#053E35' }}>
+              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+              {rec.casperPhrase}
             </p>
           </div>
         </div>
