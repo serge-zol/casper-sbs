@@ -19,7 +19,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
   if (profiles === undefined) {
     return (
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex items-center justify-center">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} height={32} style={{ width: 32, height: 'auto' }} />
       </div>
     )
   }
@@ -28,7 +28,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
     return (
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }}
         className="flex flex-col items-center justify-center px-6 text-center">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} className="mb-4" style={{ width: 56, height: 'auto' }} />
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={56} height={56} className="mb-4" style={{ width: 56, height: 'auto' }} />
         <p className="text-base mb-6" style={{ color: '#053E35' }}>Профілів ще немає</p>
         <button
           onClick={() => { localStorage.removeItem('onboardingDone'); onNavigate('welcome') }}
@@ -47,7 +47,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
     <>
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex flex-col px-6 pt-16 pb-10">
         <div className="flex items-center mb-1" style={{ gap: 12 }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto', flexShrink: 0 }} />
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} height={32} style={{ width: 32, height: 'auto', flexShrink: 0 }} />
           <h1 className="text-2xl font-bold" style={{ color: '#053E35' }}>Хм-м-м... я вже чекаю. Хто йде?</h1>
         </div>
         <p className="text-sm mb-8" style={{ color: '#666666' }}>{today}</p>

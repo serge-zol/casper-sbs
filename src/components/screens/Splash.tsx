@@ -13,6 +13,7 @@ export default function Splash({ onDone }: { onDone: () => void }) {
         src={`${import.meta.env.BASE_URL}cat-paw.png`}
         alt="Сліди Каспера"
         width={80}
+        height={80}
         className="mb-8"
         style={{ width: 80, height: 'auto' }}
       />

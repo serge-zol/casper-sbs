@@ -155,7 +155,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
   if (!profile) {
     return (
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }} className="flex items-center justify-center">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} height={32} style={{ width: 32, height: 'auto' }} />
       </div>
     )
   }
@@ -343,6 +343,7 @@ export default function Activity({ onNavigate }: { onNavigate: (s: Screen) => vo
                     src={`${import.meta.env.BASE_URL}cat-paw.png`}
                     alt=""
                     width={24}
+                    height={24}
                     style={{
                       width: 24, height: 'auto',
                       filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white)',
@@ -478,7 +479,7 @@ function PrePhase({
       {isOlena && (
         <div className="rounded-2xl px-4 py-3 mb-4" style={{ background: '#CDE1D5' }}>
           <p className="flex items-center gap-2 text-sm font-semibold mb-2" style={{ color: '#053E35' }}>
-            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={18} style={{ width: 18, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={18} height={18} style={{ width: 18, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
             Чи є дискомфорт у зоні операції?
           </p>
           <YesNo value={pre.operationZoneDiscomfort} onChange={v => upd({ operationZoneDiscomfort: v })} />
@@ -619,7 +620,7 @@ function SessionPhase({
       <div className="rounded-2xl px-4 py-3 mt-8 max-w-sm w-full"
         style={{ background: isOlena ? '#CDE1D5' : '#FFF0E8' }}>
         <p className="flex gap-2 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} height={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
           {isOlena
             ? 'Комфортний темп.\nБез прискорення.\nФокус — рівне дихання.'
             : 'Ритм важливіший за швидкість.\nКаспер поруч.'}
@@ -802,7 +803,7 @@ function DonePhase({ post, pre }: { post: PostData; pre: PreData }) {
       <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
         {/* CASPER_ICON: завжди використовувати cat-paw.png, не emoji */}
         <p className="flex gap-2 text-sm" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} height={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
           {pickPhrase(level)}
         </p>
       </div>

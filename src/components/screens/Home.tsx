@@ -14,7 +14,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
     return (
       <div style={{ minHeight: '100dvh', background: '#FFF7EC' }}
         className="flex items-center justify-center">
-        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
+        <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} height={32} style={{ width: 32, height: 'auto' }} />
       </div>
     )
   }
@@ -101,13 +101,13 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
               </p>
               {rec.cautionLevel === 'red' && (
                 <p className="flex items-center gap-1.5 text-xs mt-2" style={{ color: '#053E35' }}>
-                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} height={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
                   Сьогодні — день відновлення. Дай тілу відпочити, Каспер порадить легку прогулянку завтра 🐾
                 </p>
               )}
               {rec.safetyNotes && (
                 <p className="flex items-center gap-1.5 text-xs mt-2" style={{ color: '#053E35' }}>
-                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+                  <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={16} height={16} style={{ width: 16, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
                   {rec.safetyNotes}
                 </p>
               )}
@@ -165,7 +165,7 @@ export default function Home({ onNavigate }: { onNavigate: (s: Screen) => void }
         <div className="px-5 mt-6">
           <div className="rounded-2xl p-4" style={{ background: '#CDE1D5' }}>
             <p className="flex gap-2 text-sm leading-relaxed" style={{ color: '#053E35', whiteSpace: 'pre-line', alignItems: 'center' }}>
-              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+              <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={28} height={28} style={{ width: 28, height: 'auto', flexShrink: 0, alignSelf: 'center', filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
               {rec.casperPhrase}
             </p>
           </div>

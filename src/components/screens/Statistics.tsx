@@ -68,7 +68,7 @@ export default function Statistics({ onNavigate: _onNavigate }: { onNavigate: (s
       <div className="flex-1 px-5">
         {loading ? (
           <div className="flex items-center justify-center pt-20">
-            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} style={{ width: 32, height: 'auto' }} />
+            <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={32} height={32} style={{ width: 32, height: 'auto' }} />
           </div>
         ) : tab === 'together' ? (
           <TogetherView activities={activities!} />

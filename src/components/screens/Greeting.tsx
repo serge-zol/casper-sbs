@@ -54,6 +54,7 @@ export default function Greeting({ profile, onDone }: { profile: Profile; onDone
         src={`${import.meta.env.BASE_URL}cat-paw.png`}
         alt=""
         width={48}
+        height={48}
         className="mb-8"
         style={{ width: 48, height: 'auto' }}
       />

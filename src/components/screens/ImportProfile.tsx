@@ -38,6 +38,7 @@ export default function ImportProfile({ profile, onConfirm, onCancel }: Props) {
         src={`${import.meta.env.BASE_URL}cat-paw.png`}
         alt=""
         width={56}
+        height={56}
         className="mb-6"
         style={{ width: 56, height: 'auto' }}
       />

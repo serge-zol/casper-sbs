@@ -83,6 +83,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
           src={`${import.meta.env.BASE_URL}cat-paw.png`}
           alt="Сліди Каспера"
           width={80}
+          height={80}
           className="mb-8"
           style={{ width: 80, height: 'auto' }}
         />
@@ -111,7 +112,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
 
         <button
           onClick={next}
-          className="w-full max-w-xs rounded-2xl text-base font-semibold"
+          className="w-full max-w-xs rounded-2xl text-xl font-semibold"
           style={{ background: '#E85B16', color: '#fff', minHeight: 56, padding: '14px 24px' }}
         >
           Почати
@@ -165,7 +166,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
           Назад
         </button>
         <Button onClick={next} disabled={saving} style={{ flex: 1, width: 'auto' }}>
-          {phase === 7 ? (saving ? 'Зберігаємо…' : <span>Почати <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', display: 'inline', verticalAlign: 'middle', filter: 'brightness(0) invert(1) opacity(0.85)' }} /></span>) : 'Далі'}
+          {phase === 7 ? (saving ? 'Зберігаємо…' : <span>Почати <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} height={20} style={{ width: 20, height: 'auto', display: 'inline', verticalAlign: 'middle', filter: 'brightness(0) invert(1) opacity(0.85)' }} /></span>) : 'Далі'}
         </Button>
       </div>
     </div>
@@ -348,7 +349,7 @@ function Step4({ draft, update }: StepProps) {
 
       {draft.mode === 'olena' && (
         <div className="rounded-2xl px-4 py-3 mb-4 text-sm flex items-center gap-2" style={{ background: '#CDE1D5', color: '#053E35' }}>
-          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} style={{ width: 20, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
+          <img src={`${import.meta.env.BASE_URL}cat-paw.png`} alt="" width={20} height={20} style={{ width: 20, height: 'auto', flexShrink: 0, filter: 'brightness(0) saturate(100%) invert(40%) sepia(90%) saturate(600%) hue-rotate(340deg) brightness(95%)' }} />
           Режим відновлення. Перед кожним тренуванням Каспер запитає стан зони операції.
         </div>
       )}
