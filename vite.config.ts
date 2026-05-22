@@ -3,6 +3,15 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
+import { execSync } from 'child_process'
+
+const commitCount = execSync('git rev-list --count HEAD').toString().trim()
+const now = new Date()
+const kyiv = new Date(now.getTime() + 3 * 60 * 60 * 1000)
+const pad = (n: number) => String(n).padStart(2, '0')
+const time = `${pad(kyiv.getUTCHours())}:${pad(kyiv.getUTCMinutes())}:${pad(kyiv.getUTCSeconds())}`
+const date = `${pad(kyiv.getUTCDate())}.${pad(kyiv.getUTCMonth() + 1)}.${String(kyiv.getUTCFullYear()).slice(2)}`
+const buildLabel = `Каспер. Крок за кроком. v.0.1.${commitCount} ${time} ${date}`
 
 export default defineConfig({
   test: {
@@ -12,7 +21,7 @@ export default defineConfig({
     // resolve.alias успадковується з vite resolve нижче
   },
   define: {
-    __BUILD_TIME__: JSON.stringify(new Date().toISOString().slice(0, 16).replace('T', ' ')),
+    __BUILD_LABEL__: JSON.stringify(buildLabel),
   },
   // GitHub Pages serves at /casper-sbs/ — must match repo name
   base: '/casper-sbs/',

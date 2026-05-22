@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense, useEffect } from 'react'
 
-declare const __BUILD_TIME__: string
+declare const __BUILD_LABEL__: string
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
 import Onboarding from '@/components/screens/Onboarding'
@@ -74,7 +74,7 @@ export default function App() {
         fontStyle: 'italic', padding: '2px 0', paddingRight: 8,
         pointerEvents: 'none',
       }}>
-        Каспер · v0.1 · {__BUILD_TIME__}
+        {__BUILD_LABEL__}
       </div>
     </SafeAreaWrapper>
   )
