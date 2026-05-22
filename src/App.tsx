@@ -66,6 +66,13 @@ export default function App() {
       {TAB_SCREENS.includes(screen) && (
         <TabBar active={screen} onNavigate={setScreen} />
       )}
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999,
+        fontSize: 10, color: 'rgba(0,0,0,0.25)', textAlign: 'center',
+        padding: '2px 0', pointerEvents: 'none',
+      }}>
+        Каспер · Крок за кроком · v0.1-mvp
+      </div>
     </SafeAreaWrapper>
   )
 }
