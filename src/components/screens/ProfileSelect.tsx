@@ -5,94 +5,46 @@ import type { Screen } from '@/App'
 import type { Profile } from '@/db/types'
 import ShareProfileModal from '@/components/ui/ShareProfileModal'
 
-function playCallPurr() {
-  try {
-    const ctx = new AudioContext()
-
-    const play = () => {
-      const t = ctx.currentTime
-
-      const osc = ctx.createOscillator()
-      osc.type = 'sine'
-      osc.frequency.setValueAtTime(150, t)
-      osc.frequency.linearRampToValueAtTime(200, t + 0.8)  // glide вгору — кіт питає "хто?"
-
-      const lfo = ctx.createOscillator()
-      lfo.type = 'sine'
-      lfo.frequency.value = 25
-
-      const lfoGain = ctx.createGain()
-      lfoGain.gain.value = 0.5
-
-      const carrierGain = ctx.createGain()
-      carrierGain.gain.value = 0.5
-
-      const filter = ctx.createBiquadFilter()
-      filter.type = 'lowpass'
-      filter.frequency.value = 600
-      filter.Q.value = 0.8
-
-      const master = ctx.createGain()
-      master.gain.setValueAtTime(0, t)
-      master.gain.linearRampToValueAtTime(0.10, t + 0.1)
-      master.gain.setValueAtTime(0.10, t + 1.4)
-      master.gain.linearRampToValueAtTime(0, t + 1.8)
-
-      lfo.connect(lfoGain)
-      lfoGain.connect(carrierGain.gain)
-      osc.connect(carrierGain)
-      carrierGain.connect(filter)
-      filter.connect(master)
-      master.connect(ctx.destination)
-
-      osc.start(t)
-      lfo.start(t)
-      osc.stop(t + 1.8)
-      lfo.stop(t + 1.8)
-
-      osc.onended = () => ctx.close()
-    }
-
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(play).catch(() => ctx.close())
-    } else {
-      play()
-    }
-  } catch {
-    // AudioContext недоступний
-  }
-}
-
 export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   const profiles = useLiveQuery(() => db.profiles.toArray(), [])
   const [sharingProfile, setSharingProfile] = useState<Profile | null>(null)
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null
+    let ctx: AudioContext | null = null
+    let cancelled = false
 
-    function onUnlocked() {
-      playCallPurr()
-      intervalId = setInterval(playCallPurr, 60_000)
+    async function init() {
+      try {
+        ctx = new AudioContext()
+        await ctx.resume()
+        const resp = await fetch(`${import.meta.env.BASE_URL}cat-twit.mp3`)
+        const ab = await resp.arrayBuffer()
+        if (cancelled) return
+        const buffer = await ctx.decodeAudioData(ab)
+        if (cancelled) return
+
+        const playOnce = () => {
+          if (!ctx || !buffer) return
+          const src = ctx.createBufferSource()
+          src.buffer = buffer
+          src.connect(ctx.destination)
+          src.start()
+        }
+
+        playOnce()
+        intervalId = setInterval(playOnce, 60_000)
+      } catch {
+        // аудіо недоступне
+      }
     }
 
-    let probe: AudioContext
-    try {
-      probe = new AudioContext()
-    } catch {
-      return
-    }
-
-    if (probe.state === 'running') {
-      probe.close()
-      onUnlocked()
-    } else {
-      probe.close()
-      document.addEventListener('click', onUnlocked, { once: true })
-    }
+    init()
 
     return () => {
-      document.removeEventListener('click', onUnlocked)
+      cancelled = true
       if (intervalId !== null) clearInterval(intervalId)
+      ctx?.close().catch(() => {})
     }
   }, [])
 
