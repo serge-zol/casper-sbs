@@ -1,17 +1,8 @@
-import { useEffect } from 'react'
-import type { Screen } from '@/App'
-
-export default function Splash({ onNavigate }: { onNavigate: (s: Screen) => void }) {
-  useEffect(() => {}, [])
-
-  function handleTap() {
-    const lastProfileId = localStorage.getItem('lastProfileId')
-    onNavigate(lastProfileId ? 'home' : 'profile-select')
-  }
+export default function Splash({ onDone }: { onDone: () => void }) {
 
   return (
     <div
-      onClick={handleTap}
+      onClick={onDone}
       className="flex flex-col items-center justify-center px-8 text-center"
       style={{ minHeight: '100dvh', background: '#053E35', cursor: 'pointer' }}
     >

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/db/db'
 import type { Screen } from '@/App'
@@ -8,45 +8,6 @@ import ShareProfileModal from '@/components/ui/ShareProfileModal'
 export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   const profiles = useLiveQuery(() => db.profiles.toArray(), [])
   const [sharingProfile, setSharingProfile] = useState<Profile | null>(null)
-
-  useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval> | null = null
-    let ctx: AudioContext | null = null
-    let cancelled = false
-
-    async function init() {
-      try {
-        ctx = new AudioContext()
-        await ctx.resume()
-        const resp = await fetch(`${import.meta.env.BASE_URL}cat-twit.mp3`)
-        const ab = await resp.arrayBuffer()
-        if (cancelled) return
-        const buffer = await ctx.decodeAudioData(ab)
-        if (cancelled) return
-
-        const playOnce = () => {
-          if (!ctx || !buffer) return
-          const src = ctx.createBufferSource()
-          src.buffer = buffer
-          src.connect(ctx.destination)
-          src.start()
-        }
-
-        playOnce()
-        intervalId = setInterval(playOnce, 60_000)
-      } catch {
-        // аудіо недоступне
-      }
-    }
-
-    init()
-
-    return () => {
-      cancelled = true
-      if (intervalId !== null) clearInterval(intervalId)
-      ctx?.close().catch(() => {})
-    }
-  }, [])
 
   function selectProfile(profileId: number, mode: 'solo' | 'together') {
     localStorage.setItem('activeProfileId', String(profileId))
