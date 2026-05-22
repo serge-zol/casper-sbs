@@ -59,6 +59,7 @@ export default function Settings({ onNavigate }: { onNavigate: (s: Screen) => vo
   }
 
   function switchProfile() {
+    localStorage.removeItem('lastProfileId')
     onNavigate('profile-select')
   }
 

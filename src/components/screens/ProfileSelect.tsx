@@ -80,6 +80,7 @@ export default function ProfileSelect({ onNavigate }: { onNavigate: (s: Screen) 
   function selectProfile(profileId: number, mode: 'solo' | 'together') {
     localStorage.setItem('activeProfileId', String(profileId))
     localStorage.setItem('activeMode', mode)
+    localStorage.setItem('lastProfileId', String(profileId))
     onNavigate('home')
   }
 

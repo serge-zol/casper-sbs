@@ -3,6 +3,7 @@ import { useState, lazy, Suspense, useEffect } from 'react'
 declare const __BUILD_LABEL__: string
 import SafeAreaWrapper from '@/components/layout/SafeAreaWrapper'
 import TabBar from '@/components/layout/TabBar'
+import Splash from '@/components/screens/Splash'
 import Onboarding from '@/components/screens/Onboarding'
 import ProfileSelect from '@/components/screens/ProfileSelect'
 import ImportProfile from '@/components/screens/ImportProfile'
@@ -16,6 +17,7 @@ import type { Profile } from '@/db/types'
 const Statistics = lazy(() => import('@/components/screens/Statistics'))
 
 export type Screen =
+  | 'splash'
   | 'welcome'
   | 'profile-select'
   | 'import-profile'
@@ -28,7 +30,7 @@ export type Screen =
 const TAB_SCREENS: Screen[] = ['home', 'activity', 'journal', 'statistics']
 
 function getInitialScreen(): Screen {
-  return localStorage.getItem('onboardingDone') ? 'profile-select' : 'welcome'
+  return localStorage.getItem('onboardingDone') ? 'splash' : 'welcome'
 }
 
 function parseImportParam(): Profile | null {
@@ -92,6 +94,8 @@ function ScreenRouter({
   onImportDone: () => void
 }) {
   switch (screen) {
+    case 'splash':
+      return <Splash onNavigate={onNavigate} />
     case 'welcome':
       return <Onboarding onComplete={() => onNavigate('profile-select')} />
     case 'profile-select':
